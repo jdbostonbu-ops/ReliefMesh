@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="/src/style.css"/>
+    <script src="https://cdnjs.cloudflare.com"></script>
+    <script src="https://cdn.jsdelivr.net"></script>
+
+
+    <title>Relief-Mesh-App</title>
+  </head>
+  <body>
+
+  <div id="app" style="width: 100vw; height: 100vh;"></div>
+  <div class="overlay">
+    <h1>ReliefMesh: Global Sector</h1>
+     <div id="search-container">
+        <input type="text" id="zip-input" placeholder="Enter Zip Code">
+        
+        <button id="reset-view-btn" style="width: 100%; margin-top: 10px; background: rgba(255,255,255,0.1); color: white; border: 1px solid #444; padding: 10px; border-radius: 8px; cursor: pointer;">
+        🌍 RETURN TO GLOBE</button>
+
+        <button id="post-need-btn" style="width: 100%; margin-top: 15px; 
+        background: #ff4d4d; color: white; border: none; padding: 12px; 
+        border-radius: 8px; font-weight: bold; cursor: pointer; 
+        pointer-events: auto;">+ POST A NEED</button>
+
+        <div id="post-form" style="display: none; margin-top: 15px; 
+        border-top: 1px solid #333; padding-top: 15px;">
+
+        <select id="category-select" style="width: 100%; padding: 10px; border-radius: 5px; 
+        margin-bottom: 10px; background: #222; color: white;">
+        <option value="Medical" data-color="#ff4d4d">🔴 Medical (Insulin, First Aid)</option>
+        <option value="Rations" data-color="#4dff4d">🟢 Rations (Food, Water)</option>
+        <option value="Utility" data-color="#4db8ff">🔵 Utility (Power, Fuel, Heat)</option>
+        <option value="Shelter" data-color="#bb86fc">🟣 Shelter (Blankets, Cots)</option>
+
+    </select>
+        <input type="text" id="item-input" placeholder="What is needed? (e.g. 3 cases of water)" 
+        style="width: 100%; padding: 10px; border-radius: 5px; margin-bottom: 10px; background: #222; 
+        color: white; border: 1px solid #444;">
+
+        <p style="font-size: 11px; color: #888;">*After clicking 'Drop Pin', click the location on the map.</p>
+
+        <button id="drop-pin-btn" style="width: 100%; background: #4db8ff; color: black; 
+        border: none; padding: 10px; border-radius: 5px; font-weight: bold; cursor: pointer;"
+        >DROP PIN ON MAP</button>
+        </div>
+
+      
+
+        <button id="clear-btn" style="position: absolute; right: 110px; 
+        background: none; border: none; color: #888; cursor: pointer; 
+        display: none;">✖</button>
+
+        <button id="search-btn">Find Help</button>
+  </div>
+</div>
+  <div id="match-sidebar" class="sidebar">
+    <!-- HEADER -->
+    <div class="sidebar-header" style="border-bottom: 1px solid #333;">
+        <h2 style="margin: 0;">My Matches</h2>
+        <span id="match-count" style="background: #4db8ff; color: black; 
+        padding: 2px 10px; border-radius: 12px; font-weight: bold;">0</span>
+    </div>
+
+    <!-- MISSION INTEL (Moved UP and forced to BLOCK for testing) -->
+    <!-- CHANGE 'display: block' BACK TO 'display: none' AFTER TESTING -->
+    <div id="intel-section" style="display: block; margin-top: 20px; 
+    border-top: 1px solid #4db8ff; padding-top: 15px;">
+        <h3 style="color: #4db8ff; font-size: 24px; margin-bottom: 10px;">LIVE MISSION INTEL</h3>
+        <div id="active-mission-card" style="background: rgba(77, 184, 255, 0.1); 
+        padding: 15px; border-radius: 8px; border: 1px solid #4db8ff; min-height: 50px;">
+            <p style="color: #888; font-size: 12px; ">Waiting for mission assignment...</p>
+        </div>
+        <!-- 4. CLEAR ALL BUTTON -->
+        <button id="clear-matches-btn" style="width: 100%; margin-top: 20px; background: none; 
+        border: 1px solid #ff4d4d; color: #ff4d4d; padding: 10px; border-radius: 5px; 
+        cursor: pointer; font-weight: bold; font-size: 11px; letter-spacing: 1px;">
+            RESET ALL MISSIONS
+        </button>
+    </div>
+  
+    <!-- 3. MATCH HISTORY LIST -->
+    <div id="match-list" style="margin-top: 20px;">
+        <p class="empty-msg" style="color: #fff; opacity: 0.7;"
+        >No active matches yet. Swipe on a marker to help!</p>
+    </div>
+</div>
+
+
+</body>
+<script type="module" src="/src/main.js"></script>
+</html>
