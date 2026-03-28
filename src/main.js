@@ -111,7 +111,7 @@ onValue(reportsRef, (snapshot) => {
 
         Object.keys(data).forEach(key => {
             const report = data[key];
-/***************************************TRIANGLE/CIRCLE MARKERS */
+/***************************************TRIANGLE/CIRCLE MARKERS "UNSUCCESSFUL-ONLY CIRCLES APPEAR" */
  const el = document.createElement('div');
 el.className = 'sos-marker';
 
