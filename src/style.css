@@ -237,4 +237,9 @@ exactly how to "grow" and "fade" the SOS signal over time.*/
     100% { transform: scale(1); opacity: 1; }
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
