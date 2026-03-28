@@ -210,41 +210,21 @@ exactly how to "grow" and "fade" the SOS signal over time.*/
         opacity: 1;
     }
 }
-
-/* The 'Need' Marker (Dashed/Searching) */
 /* The 'Need' Marker (Hollow Triangle) UNSUCCESSFUL */
-/* The Marker itself (Pin to Map) */
+/* The 'Need' Marker (Cleaned up for SVG) */
 .sos-marker.need {
-    width: 30px;
-    height: 30px;
+    background-color: transparent !important; /* Removes any solid circle background */
+    border: none !important;                 /* Removes any circular borders */
+    width: 32px; 
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-/* The Animated Triangle Inside */
-.triangle-inner {
-    width: 0;
-    height: 0;
-    border-left: 12px solid transparent;
-    border-right: 12px solid transparent;
-    border-bottom: 20px solid #ef4444; /* SOS Red */
-    position: relative;
     
-    /* Apply your pulse here */
+    /* Keep your pulse! It works perfectly on the SVG */
     animation: triangle-pulse 2s ease-in-out infinite;
 }
 
-/* The "Hollow" look */
-.triangle-inner::after {
-    content: '';
-    position: absolute;
-    top: 4px;
-    left: -8px;
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-bottom: 14px solid #1a1a1a; /* Match map background */
-}
 
 @keyframes triangle-pulse {
     0% { transform: scale(1); opacity: 1; }
