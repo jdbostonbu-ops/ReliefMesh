@@ -40,8 +40,8 @@ p {
 
 /* The SOS Animation */
 .sos-marker {
-  width: calc(9px * var(--marker-scale)); 
-  height: calc(9px * var(--marker-scale));
+  width: calc(12px * var(--marker-scale)); 
+  height: calc(12px * var(--marker-scale));
   background-color: #ff4d4d;
   border-radius: 50%;
   cursor: pointer;
@@ -212,23 +212,30 @@ exactly how to "grow" and "fade" the SOS signal over time.*/
 }
 
 /* The 'Need' Marker (Dashed/Searching) */
-/* The 'Need' Marker (Hollow Triangle) */
+/* The 'Need' Marker (Hollow Triangle) UNSUCCESSFUL */
 .sos-marker.need {
+    width: 0;
+    height: 0;
     background-color: transparent !important;
-    width: 24px; /* Slightly larger to be visible */
-    height: 24px;
-
-    /* This creates the triangle shape "UNSUCCESSFUL" */
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-    border: 3px solid white; /* This will act as the outline */
-    background: repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 5px,
-        rgba(255, 255, 255, 0.2) 5px,
-        rgba(255, 255, 255, 0.2) 10px
-    ); /* Adds a "caution" stripe inside */
+    /* Create the outer triangle shape */
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 26px solid #ef4444; /* SOS Red */
+    position: relative;
     animation: triangle-pulse 2s ease-in-out infinite;
+}
+
+/* The "Hollow" center */
+.sos-marker.need::after {
+    content: '';
+    position: absolute;
+    top: 4px; /* Adjust to change thickness */
+    left: -11px;
+    width: 0;
+    height: 0;
+    border-left: 11px solid transparent;
+    border-right: 11px solid transparent;
+    border-bottom: 19px solid #1a1a1a; /* Match your map background color */
 }
 
 @keyframes triangle-pulse {
