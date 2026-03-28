@@ -55,6 +55,12 @@ p {
   border: 2px solid white;
 }
 
+/* Hover Effect for both Need/Offer */
+.sos-marker:hover {
+    transform: scale(1.3);
+    z-index: 10;
+}
+
 
 .overlay {
     position: absolute;
@@ -73,7 +79,7 @@ p {
     position: absolute;
     left: 20px;      /* Aligns with the box above */
     width: 320px;    /* Matches width of the search box */
-    height: calc(78vh - 240px); /* Fills the rest of the screen */
+    height: calc(75vh - 240px); /* Fills the rest of the screen */
     z-index: 10;
     background: rgba(15, 15, 15, 0.85);
     backdrop-filter: blur(10px);
@@ -81,7 +87,7 @@ p {
     padding: 20px;
     border: 1px solid rgba(77, 184, 255, 0.3);
     overflow-y: auto; /* Adds a scrollbar if you have many matches */
-    margin-top: 530px;
+    margin-top: 560px;
 }
 
 
@@ -204,3 +210,31 @@ exactly how to "grow" and "fade" the SOS signal over time.*/
         opacity: 1;
     }
 }
+
+/* The 'Need' Marker (Dashed/Searching) */
+/* The 'Need' Marker (Hollow Triangle) */
+.sos-marker.need {
+    background-color: transparent !important;
+    width: 24px; /* Slightly larger to be visible */
+    height: 24px;
+
+    /* This creates the triangle shape "UNSUCCESSFUL" */
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    border: 3px solid white; /* This will act as the outline */
+    background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 5px,
+        rgba(255, 255, 255, 0.2) 5px,
+        rgba(255, 255, 255, 0.2) 10px
+    ); /* Adds a "caution" stripe inside */
+    animation: triangle-pulse 2s ease-in-out infinite;
+}
+
+@keyframes triangle-pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+
