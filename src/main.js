@@ -111,18 +111,27 @@ onValue(reportsRef, (snapshot) => {
 
         Object.keys(data).forEach(key => {
             const report = data[key];
-            const el = document.createElement('div');
-            el.className = 'sos-marker';
+/***************************************TRIANGLE/CIRCLE MARKERS */
+ const el = document.createElement('div');
+el.className = 'sos-marker';
 
-            // VISUALS: Need = Dashed, Offer = Solid
-            if (report.type === 'need') {
-                el.classList.add('need'); 
-                el.style.backgroundColor = report.color;// <-- This is to create a Triangle
-            } else {
-                el.style.backgroundColor = report.color;
-                el.style.borderRadius = '50%'; // Solid for Offer
-            }
-
+if (report.type === 'need') {
+    el.classList.add('need');
+    
+    const inner = document.createElement('div');
+    inner.className = 'triangle-inner';
+    
+    // APPLY THE COLOR TO THE TRIANGLE BORDER
+    inner.style.borderBottomColor = report.color; 
+    
+    el.appendChild(inner);
+} else {
+    el.classList.add('offer');
+    // APPLY THE COLOR TO THE CIRCLE BACKGROUND
+    el.style.backgroundColor = report.color;
+    el.style.borderRadius = '50%';
+}
+/*************************************************Triangle and Circle */
             const popup = new mapboxgl.Popup({ offset: 25, anchor: 'bottom' })
                 .setHTML(`
                     <div style="color: #333; font-family: sans-serif; padding: 5px; min-width: 160px;">
@@ -146,6 +155,7 @@ map.on('style.load', () => {
                     element: el,
                     occludedOpacity: 0 // This makes markers 100% invisible when behind the Earth
                     })
+
 
                 .setLngLat(report.loc)
                 .setPopup(popup)

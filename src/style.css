@@ -213,34 +213,42 @@ exactly how to "grow" and "fade" the SOS signal over time.*/
 
 /* The 'Need' Marker (Dashed/Searching) */
 /* The 'Need' Marker (Hollow Triangle) UNSUCCESSFUL */
+/* The Marker itself (Pin to Map) */
 .sos-marker.need {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* The Animated Triangle Inside */
+.triangle-inner {
     width: 0;
     height: 0;
-    background-color: transparent !important;
-    /* Create the outer triangle shape */
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    border-bottom: 26px solid #ef4444; /* SOS Red */
+    border-left: 12px solid transparent;
+    border-right: 12px solid transparent;
+    border-bottom: 20px solid #ef4444; /* SOS Red */
     position: relative;
+    
+    /* Apply your pulse here */
     animation: triangle-pulse 2s ease-in-out infinite;
 }
 
-/* The "Hollow" center */
-.sos-marker.need::after {
+/* The "Hollow" look */
+.triangle-inner::after {
     content: '';
     position: absolute;
-    top: 4px; /* Adjust to change thickness */
-    left: -11px;
-    width: 0;
-    height: 0;
-    border-left: 11px solid transparent;
-    border-right: 11px solid transparent;
-    border-bottom: 19px solid #1a1a1a; /* Match your map background color */
+    top: 4px;
+    left: -8px;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 14px solid #1a1a1a; /* Match map background */
 }
 
 @keyframes triangle-pulse {
     0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.2); opacity: 0.7; }
+    50% { transform: scale(1.3); opacity: 0.6; } /* Slightly bigger for urgency */
     100% { transform: scale(1); opacity: 1; }
 }
 
