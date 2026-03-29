@@ -79,7 +79,7 @@ p {
     position: absolute;
     left: 20px;      /* Aligns with the box above */
     width: 320px;    /* Matches width of the search box */
-    height: calc(75vh - 240px); /* Fills the rest of the screen */
+    height: calc(73vh - 200px); /* Fills the rest of the screen */
     z-index: 10;
     background: rgba(15, 15, 15, 0.85);
     backdrop-filter: blur(10px);
@@ -87,7 +87,7 @@ p {
     padding: 20px;
     border: 1px solid rgba(77, 184, 255, 0.3);
     overflow-y: auto; /* Adds a scrollbar if you have many matches */
-    margin-top: 560px;
+    margin-top: 590px;
 }
 
 
