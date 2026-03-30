@@ -398,7 +398,6 @@ postNeedBtn.addEventListener('click', () => {
 /************************************************** */
 
 // The actual "Drop" logic
-// The actual "Drop" logic
 dropPinBtn.addEventListener('click', () => {
     const item = document.getElementById('item-input').value;
     const select = document.getElementById('category-select');
@@ -419,82 +418,96 @@ dropPinBtn.addEventListener('click', () => {
             category: category,
             color: color,
             item: item,
-            type: currentPostType, 
+            type: currentPostType, // Important: Ensure your script tracks if it's a 'need' or 'offer'
             msg: `Urgent ${category} request: ${item}`,
             loc: [lng, lat],
-            timestamp: Date.now(), 
-            createdAt: serverTime
+            timestamp: Date.now(), // Good for sorting later
+            createdAt: { ".sv": "timestamp" }
         };
   
-        // 1. GENERATE THE UNIQUE KEY
+        //  PUSH TO FIREBASE AND CAPTURE THE KEY
         const reportsRef = ref(db, 'reports');
         const newReportRef = push(reportsRef);
-        const newKey = newReportRef.key; 
+        const newKey = newReportRef.key; // This is the unique ID for THIS specific post
+        const newReportKey = push(ref(db, 'reports')).key;
 
-        // 2. SAVE KEY TO LOCAL STORAGE (Ownership Receipt)
+        // SAVE KEY TO LOCAL STORAGE (The "Ownership Receipt")
+        // This allows the user to delete their own post later without an account
         const myPosts = JSON.parse(localStorage.getItem('my_posts') || "[]");
         myPosts.push(newKey);
         localStorage.setItem('my_posts', JSON.stringify(myPosts));
 
-        // 3. PREPARE MULTI-PATH UPDATE
-        const updates = {};
-        updates[`/reports/${newKey}`] = newReport;
-        updates[`/last_post_time`] = serverTime;
+        // 3. SET DATA TO FIREBASE
+        set(newReportRef, newReport);
+  
+        // Reset UI
+        map.getCanvas().style.cursor = '';
+        postForm.style.display = 'none';
+        document.getElementById('item-input').value = '';
+        alert("SOS Broadcasted to Mother Earth!");
 
-        // 4. EXECUTE THE SAVE
+        const updates = {};
+        updates[`/reports/${newReportKey}`] = newReport;
+        updates[`/last_post_time`] = serverTime; // The "Master Clock"
+
         update(ref(db), updates)
-            .then(() => {
-                // SUCCESS: Reset UI and start the countdown
-                map.getCanvas().style.cursor = '';
-                postForm.style.display = 'none';
-                document.getElementById('item-input').value = '';
-                
-                alert("SOS Broadcasted to Mother Earth!");
-                startCooldown(30); 
-            })
-            .catch((err) => {
-                // FAILURE: Likely hit the 30-second global limit
-                if (err.message.includes("Permission denied")) {
-                    alert("⚠️ Global Cooldown: Someone else just posted. Please wait 30 seconds.");
-                } else {
-                    console.error("Firebase Error:", err);
-                }
-            });
+        .then(() => {
+            alert("SOS Broadcasted!");
+            startCooldown(30); // Start the visual countdown
+        })
+        .catch((err) => {
+            if (err.message.includes("Permission denied")) {
+                alert("⚠️ System Overloaded. Please wait for the 30-second cooldown.");
+            }
+        });
+        map.getCanvas().style.cursor = '';
+        postForm.style.display = 'none';
+
     });
-}); 
+});
+
 
 document.getElementById('clear-matches-btn').addEventListener('click', () => {
     if (confirm("Are you sure you want to clear your mission history?")) {
+        // Wipe the match list
         const matchList = document.getElementById('match-list');
         matchList.innerHTML = '<p class="empty-msg" style="color: #fff; opacity: 0.7;">No active matches yet. Swipe on a marker to help!</p>';
+        
+        // Hide the Intel box
         document.getElementById('intel-section').style.display = 'none';
+        
+        // Reset the counter to 0
         document.getElementById('match-count').innerText = '0';
+        
         alert("All missions cleared. System reset.");
     }
 });
 
 document.getElementById('reset-view-btn').addEventListener('click', () => {
     map.flyTo({
-        center: [-98.57, 39.82], 
-        zoom: 3,                 
-        pitch: 0,                
-        bearing: 0,              
+        center: [-98.57, 39.82], // Back to North America center
+        zoom: 3,                 // Back to space
+        pitch: 0,                // Look straight down (removes 3D tilt)
+        bearing: 0,              // Reset rotation to North
         essential: true,
-        duration: 3000           
+        duration: 3000           // A smooth 3-second flight
     });
 });
 
-// 🌍 THE AUTO-ROTATE ENGINE
-let userInteracting = false;
-const maxSpinZoom = 5; 
-const msPerRotation = 120000; 
 
+// 🌍 THE AUTO-ROTATE ENGINE
+// Setup Variables
+let userInteracting = false;
+const maxSpinZoom = 5; // Rotation stops if you zoom in past this
+const msPerRotation = 120000; // Time for one full spin (2 minutes)
+
+// The Rotation Engine
 function spinGlobe() {
     const zoom = map.getZoom();
     if (!userInteracting && zoom < maxSpinZoom) {
         let distancePerSecond = 360 / (msPerRotation / 1000);
         const center = map.getCenter();
-        center.lng -= distancePerSecond; 
+        center.lng -= distancePerSecond; // Drift left
 
         map.easeTo({ 
             center, 
@@ -505,45 +518,20 @@ function spinGlobe() {
     }
 }
 
+// EVENT LISTENERS: The "Green Light" for the engine
+// Stop when touching
 map.on('mousedown', () => { userInteracting = true; });
+
+// Restart when released or finished moving
 map.on('mouseup', () => { userInteracting = false; spinGlobe(); });
 map.on('dragend', () => { userInteracting = false; spinGlobe(); });
 map.on('pitchend', () => { userInteracting = false; spinGlobe(); });
 map.on('rotateend', () => { userInteracting = false; spinGlobe(); });
-map.on('moveend', () => { spinGlobe(); });
 
+// The Loop: When one 1-second 'easeTo' finishes, start the next one
+map.on('moveend', () => {
+    spinGlobe();
+});
+
+// 4. Initial start
 spinGlobe();
-
-// --- UTILITY FUNCTIONS ---
-function startCooldown(seconds) {
-    const needBtn = document.getElementById('post-need-btn'); 
-    const offerBtn = document.getElementById('post-offer-btn');
-    
-    const originalNeedText = needBtn.innerText;
-    const originalOfferText = offerBtn.innerText;
-    let remaining = seconds;
-
-    [needBtn, offerBtn].forEach(btn => {
-        btn.disabled = true;
-        btn.style.opacity = "0.5";
-        btn.style.cursor = "not-allowed";
-    });
-
-    const timer = setInterval(() => {
-        remaining--;
-        needBtn.innerText = `WAIT ${remaining}s...`;
-        offerBtn.innerText = `WAIT ${remaining}s...`;
-
-        if (remaining <= 0) {
-            clearInterval(timer);
-            needBtn.innerText = originalNeedText;
-            offerBtn.innerText = originalOfferText;
-            [needBtn, offerBtn].forEach(btn => {
-                btn.disabled = false;
-                btn.style.opacity = "1";
-                btn.style.cursor = "pointer";
-            });
-        }
-    }, 1000);
-}
-
