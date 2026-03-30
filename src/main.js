@@ -93,6 +93,7 @@ map.on('style.load', () => {
 let currentPostType = 'offer'; 
 let currentMarkers = [];
 
+
 // 1. THE LISTENER (Reading from Firebase)
 const reportsRef = ref(db, 'reports');
 onValue(reportsRef, (snapshot) => {
@@ -158,75 +159,86 @@ onValue(reportsRef, (snapshot) => {
             
             currentMarkers.push(marker);
 
-           popup.on('open', () => {
-    const btn = document.getElementById(`btn-${key}`);
-    const delBtn = document.getElementById(`delete-${key}`);
-
-    // FIXED DELETE LOGIC
-    if (delBtn) {
-        delBtn.addEventListener('click', (e) => {
-            e.stopPropagation(); // 1. Stops the map from closing the popup immediately
-            
-            if (confirm("Permanently remove your post from the globe?")) {
-                // 2. Use correct Firebase v9 remove function
-                remove(ref(db, `reports/${key}`))
-                    .then(() => {
-                        // 3. Clean up local storage
-                        const updatedPosts = myPosts.filter(id => id !== key);
-                        localStorage.setItem('my_posts', JSON.stringify(updatedPosts));
-                        popup.remove();
-                    })
-                    .catch(err => console.error("Delete failed:", err));
-            }
-        });
-    }
-
-    if (btn) {
-        btn.addEventListener('click', () => {
-            // Update Firebase to show this mission is CLAIMED
-            update(ref(db, `reports/${key}`), { status: 'claimed' });
-
-            btn.innerText = "MISSION CLAIMED 🚀";
-            btn.style.backgroundColor = "#4dff4d";
-            btn.disabled = true;
-
-            const matchEntry = document.createElement('div');
-            matchEntry.className = 'match-item';
-            matchEntry.innerHTML = `
-                <div style="border-left: 4px solid ${report.color}; padding: 10px; margin-top: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
-                    <h4 style="margin:0;">${report.item}</h4>
-                    <button id="release-${key}" style="font-size:10px; background:none; border:1px solid #666; color:white; border-radius:2px; cursor:pointer;">Release</button>
-                </div>
-            `;
-            matchList.appendChild(matchEntry);
-            
-            // FIXED RELEASE LOGIC
-            document.getElementById(`release-${key}`).addEventListener('click', function() {
-                // 1. Reset status in Firebase so others can help again
-                update(ref(db, `reports/${key}`), { status: 'active' });
+            popup.on('open', () => {
+                const delBtn = document.getElementById(`delete-${key}`);
+                const btn = document.getElementById(`btn-${key}`);
+                const popupElement = document.querySelector('.mapboxgl-popup-content');
                 
-                // 2. Remove from UI
-                this.parentElement.remove();
-                matchCount.innerText = document.querySelectorAll('.match-item').length;
-            });
+                if (typeof Hammer !== 'undefined' && popupElement) {
+                    const hammer = new Hammer(popupElement);
+                    hammer.on('swiperight', () => { if (btn) btn.click(); });
+                    hammer.on('swipeleft', () => popup.remove());
+                }
 
-            matchCount.innerText = document.querySelectorAll('.match-item').length;
-        });
-    }
-})
-       
+                // FIXED DELETE LOGIC
+                if (delBtn) {
+                    delBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        if (confirm("Permanently remove your post from the globe?")) {
+                            remove(ref(db, `reports/${key}`))
+                                .then(() => {
+                                    const updatedPosts = myPosts.filter(id => id !== key);
+                                    localStorage.setItem('my_posts', JSON.stringify(updatedPosts));
+                                    popup.remove();
+                                })
+                                .catch(err => console.error("Delete failed:", err));
+                        }
+                    });
+                }
 
+                if (btn) {
+                    btn.addEventListener('click', () => {
+                        btn.innerText = "MISSION CLAIMED 🚀";
+                        btn.style.backgroundColor = "#4dff4d";
+                        btn.disabled = true;
 
-                    /* Sidebar */
-                     const matchEntry = document.createElement('div');
+                        const emptyMsg = document.querySelector('.empty-msg');
+                        if (emptyMsg) emptyMsg.remove();
+
+                        const intelSection = document.getElementById('intel-section');
+                        const missionCard = document.getElementById('active-mission-card');
+                        
+                        if (intelSection && missionCard) {
+                            intelSection.style.display = 'block';
+                            intelSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                            missionCard.innerHTML = `
+                                <div style="font-family: monospace; border-left: 2px solid #4db8ff; padding-left: 10px;">
+                                    <p style="margin: 0; color: #4db8ff; font-weight: bold;">[ACTIVE MISSION]</p>
+                                    <p style="margin: 5px 0;"><strong>TARGET:</strong> ${report.item}</p>
+                                    <p style="margin: 5px 0;"><strong>STATUS:</strong> <span style="color: #4dff4d;">EN ROUTE</span></p>
+                                    <p style="margin: 5px 0; font-size: 11px; opacity: 0.7;">COORDS: ${report.loc[0].toFixed(4)}, ${report.loc[1].toFixed(4)}</p>
+                                    <button id="complete-${key}" style="width:100%; margin-top:10px; padding:8px; background:#4db8ff; border:none; border-radius:4px; font-weight:bold; cursor:pointer; color:black;">MARK AS RECEIVED</button>
+                                </div>
+                            `;
+
+                            document.getElementById(`complete-${key}`).addEventListener('click', () => {
+                                const duration = 3 * 1000;
+                                const end = Date.now() + duration;
+                                (function frame() {
+                                    confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#4db8ff', '#4dff4d', '#ffffff'] });
+                                    confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#4db8ff', '#4dff4d', '#ffffff'] });
+                                    if (Date.now() < end) requestAnimationFrame(frame);
+                                }());
+
+                                const completeBtn = document.getElementById(`complete-${key}`);
+                                completeBtn.innerText = "MISSION LOGGED! ✅";
+                                completeBtn.style.backgroundColor = "#4dff4d";
+
+                                setTimeout(() => {
+                                    if (intelSection) intelSection.style.display = 'none';
+                                }, 2500); 
+                            });
+                        }
+
+                        /* Sidebar Logic */
+                        const matchEntry = document.createElement('div');
                         matchEntry.className = 'match-item';
                         matchEntry.innerHTML = `
                             <div style="border-left: 4px solid ${report.color}; padding: 10px; margin-top: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
                                 <h4 style="margin:0;">${report.item}</h4>
                                 <p style="margin:4px 0; font-size:11px;">Category: ${report.category}</p>
-                                <button onclick="this.parentElement.remove(); document.getElementById('match-count')
-                                .innerText = document.querySelectorAll('.match-item').length;" style="font-size:10px; 
-                                background:none; border:1px solid #666; color:white; border-radius:2px; cursor:pointer;">Release</button>
+                                <button onclick="this.parentElement.remove(); document.getElementById('match-count').innerText = document.querySelectorAll('.match-item').length;" style="font-size:10px; background:none; border:1px solid #666; color:white; border-radius:2px; cursor:pointer;">Release</button>
                             </div>
                         `;
                         matchList.appendChild(matchEntry);
@@ -234,8 +246,9 @@ onValue(reportsRef, (snapshot) => {
                     });
                 }
             });
-   
-
+        });
+    }
+});
 
 // 3D BUILDINGS LAYER
 map.on('style.load', () => {
