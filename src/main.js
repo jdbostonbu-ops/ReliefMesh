@@ -2,7 +2,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './style.css';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, onValue, set, push, remove } from 'firebase/database';
+import { getDatabase, ref, onValue, set, push, remove, update } from 'firebase/database';
 import confetti from 'canvas-confetti';
 
 //  FIREBASE CONFIGURATION
@@ -185,7 +185,7 @@ onValue(reportsRef, (snapshot) => {
                     hammer.on('swipeleft', () => popup.remove());
                 }
 
-                // FIXED DELETE LOGIC
+                // DELETE LOGIC
                 if (delBtn) {
                     delBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
@@ -203,6 +203,8 @@ onValue(reportsRef, (snapshot) => {
 
                 if (btn) {
                     btn.addEventListener('click', () => {
+                        update(ref(db, `reports/${key}`), { status: 'claimed' });
+                        
                         btn.innerText = "MISSION CLAIMED 🚀";
                         btn.style.backgroundColor = "#4dff4d";
                         btn.disabled = true;
@@ -246,16 +248,29 @@ onValue(reportsRef, (snapshot) => {
                             });
                         }
 
-                        /* Sidebar Logic */
-                        const matchEntry = document.createElement('div');
-                        matchEntry.className = 'match-item';
-                        matchEntry.innerHTML = `
-                            <div style="border-left: 4px solid ${report.color}; padding: 10px; margin-top: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
-                                <h4 style="margin:0;">${report.item}</h4>
-                                <p style="margin:4px 0; font-size:11px;">Category: ${report.category}</p>
-                                <button onclick="this.parentElement.remove(); document.getElementById('match-count').innerText = document.querySelectorAll('.match-item').length;" style="font-size:10px; background:none; border:1px solid #666; color:white; border-radius:2px; cursor:pointer;">Release</button>
-                            </div>
-                        `;
+/* Sidebar Logic */
+const matchEntry = document.createElement('div');
+matchEntry.className = 'match-item';
+matchEntry.innerHTML = `
+    <div style="border-left: 4px solid ${report.color}; padding: 10px; margin-top: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
+        <h4 style="margin:0;">${report.item}</h4>
+        <p style="margin:4px 0; font-size:11px;">Category: ${report.category}</p>
+        <button onclick="
+            // TELL FIREBASE THE MISSION IS ACTIVE AGAIN
+            // We use 'update' to set the status back to null or 'active'
+            import('firebase/database').then(({ ref, update, getDatabase }) => {
+                const db = getDatabase();
+                update(ref(db, 'reports/${key}'), { claimedBy: null, status: 'active' });
+            });
+
+            // CLEAN UP THE UI
+            this.parentElement.remove(); 
+            document.getElementById('match-count').innerText = document.querySelectorAll('.match-item').length;
+        " style="font-size:10px; background:none; border:1px solid #666; color:white; border-radius:2px; cursor:pointer;">
+            Release
+        </button>
+    </div>
+`;
                         matchList.appendChild(matchEntry);
                         matchCount.innerText = document.querySelectorAll('.match-item').length;
                     });
