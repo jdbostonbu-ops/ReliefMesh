@@ -421,6 +421,7 @@ dropPinBtn.addEventListener('click', () => {
             item: item,
             type: currentPostType, 
             msg: `Urgent ${category} request: ${item}`,
+            status: 'active',
             loc: [lng, lat],
             timestamp: Date.now(), 
             createdAt: serverTime
