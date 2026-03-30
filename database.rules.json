@@ -1,17 +1,7 @@
-{
+ {
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
   "rules": {
-    "reports": {
-     
-      ".read": true,
-      
-      
-      "$report_id": {
-        
-        ".write": true,
-        
-        
-        ".validate": "newData.hasChildren(['type', 'item', 'category', 'loc', 'color']) && (newData.child('type').val() === 'offer' || newData.child('type').val() === 'need')"
-      }
-    }
+    ".read": true,
+    ".write": true
   }
 }
