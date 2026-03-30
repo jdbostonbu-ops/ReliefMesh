@@ -203,7 +203,7 @@ onValue(reportsRef, (snapshot) => {
                     });
                 }
 
-                if (btn) {
+                 if (btn) {
                     btn.addEventListener('click', () => {
                         // 1. UI Update
                         btn.innerText = "MISSION CLAIMED 🚀";
@@ -233,46 +233,50 @@ onValue(reportsRef, (snapshot) => {
                                 </div>
                             `;
 
-                            document.getElementById(`complete-${key}`).addEventListener('click', () => {
-                                const duration = 3 * 1000;
-                                const end = Date.now() + duration;
-                            
-                                (function frame() {
-                                    confetti({
-                                        particleCount: 3,
-                                        angle: 60,
-                                        spread: 55,
-                                        origin: { x: 0 },
-                                        colors: ['#4db8ff', '#4dff4d', '#ffffff']
-                                    });
-                                    confetti({
-                                        particleCount: 3,
-                                        angle: 120,
-                                        spread: 55,
-                                        origin: { x: 1 },
-                                        colors: ['#4db8ff', '#4dff4d', '#ffffff']
-                                    });
-                            
-                                    if (Date.now() < end) {
-                                        requestAnimationFrame(frame);
-                                    }
-                                }());
-                            
-                                const completeBtn = document.getElementById(`complete-${key}`);
-                                completeBtn.innerText = "MISSION LOGGED! ✅";
-                                completeBtn.style.backgroundColor = "#4dff4d";
-                            
-                                setTimeout(() => {
-                                    const intelSection = document.getElementById('intel-section');
-                                    if (intelSection) {
-                                        intelSection.style.display = 'none';
-                                    }
-                                }, 2500); 
-                            });
+                        document.getElementById(`complete-${key}`).addEventListener('click', () => {
+                            // Start the Left/Right Confetti "Rain"
+                            const duration = 3 * 1000;
+                            const end = Date.now() + duration;
+                        
+                            (function frame() {
+                                confetti({
+                                    particleCount: 3,
+                                    angle: 60,
+                                    spread: 55,
+                                    origin: { x: 0 },
+                                    colors: ['#4db8ff', '#4dff4d', '#ffffff']
+                                });
+                                confetti({
+                                    particleCount: 3,
+                                    angle: 120,
+                                    spread: 55,
+                                    origin: { x: 1 },
+                                    colors: ['#4db8ff', '#4dff4d', '#ffffff']
+                                });
+                        
+                                if (Date.now() < end) {
+                                    requestAnimationFrame(frame);
+                                }
+                            }());
+                        
+                            // Visual Feedback on the Button
+                            const btn = document.getElementById(`complete-${key}`);
+                            btn.innerText = "MISSION LOGGED! ✅";
+                            btn.style.backgroundColor = "#4dff4d";
+                        
+                            // The "Glory Delay" (Replaces the alert)
+                            // We wait 2.5 seconds so they can see the confetti rain before the card disappears
+                            setTimeout(() => {
+                                const intelSection = document.getElementById('intel-section');
+                                if (intelSection) {
+                                    intelSection.style.display = 'none';
+                                }
+                            }, 2500); 
+                        });
+                        
                         } 
-
-                        /* Sidebar */
-                        const matchEntry = document.createElement('div');
+                    /* Sidebar */
+                     const matchEntry = document.createElement('div');
                         matchEntry.className = 'match-item';
                         matchEntry.innerHTML = `
                             <div style="border-left: 4px solid ${report.color}; padding: 10px; margin-top: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
@@ -288,10 +292,9 @@ onValue(reportsRef, (snapshot) => {
                     });
                 }
             });
-        });
-    }
+        }); 
+    } 
 });
-
 
 // 3D BUILDINGS LAYER
 map.on('style.load', () => {
