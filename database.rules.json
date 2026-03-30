@@ -1,18 +1,16 @@
 {
   "rules": {
     "reports": {
-      
+     
       ".read": true,
       
       
-      ".write": false, 
-
       "$report_id": {
-      
+        
         ".write": true,
         
         
-        ".validate": "newData.hasChildren(['category', 'item', 'loc'])"
+        ".validate": "newData.hasChildren(['type', 'item', 'category', 'loc', 'color']) && (newData.child('type').val() === 'offer' || newData.child('type').val() === 'need')"
       }
     }
   }
