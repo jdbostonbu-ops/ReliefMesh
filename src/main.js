@@ -52,7 +52,7 @@ const map = new mapboxgl.Map({
     }
 });
 
-// 4. ATMOSPHERE & HEATMAP
+// ATMOSPHERE & HEATMAP
 map.on('style.load', () => {
     
     // Set the Space/Atmosphere 
@@ -119,8 +119,23 @@ onValue(reportsRef, (snapshot) => {
             const isOwner = myPosts.includes(key);
 
             const el = document.createElement('div');
-            el.className = 'sos-marker pulse'; 
+            el.className = 'sos-marker pulse';
+            /** THE INITIAL DYNAMIC GLOW-ADDED THREE LAYERS FOR INTENSITY **/
+            el.style.filter = `
+            drop-shadow(0 0 8px ${report.color}) 
+            drop-shadow(0 0 25px ${report.color}) 
+            drop-shadow(0 0 50px ${report.color}44)`;
+            
+            /*** THE LISTENERS UPON HOVER OVER ***/
+            el.addEventListener('mouseenter', () => {
+            el.style.filter = `drop-shadow(0 0 8px ${report.color}) drop-shadow(0 0 20px ${report.color})`;
+            el.style.zIndex = '1000'; 
+    });
 
+            el.addEventListener('mouseleave', () => {
+            el.style.filter = `drop-shadow(0 0 5px ${report.color}) drop-shadow(0 0 10px ${report.color}66)`;
+            el.style.zIndex = ''; 
+    });
             // --- FORMING TRIANGLES / CIRCLES ---
             if (report.type === 'need') {
                 el.classList.add('need');
@@ -387,12 +402,12 @@ dropPinBtn.addEventListener('click', () => {
             timestamp: Date.now() // Good for sorting later
         };
   
-        // 1. PUSH TO FIREBASE AND CAPTURE THE KEY
+        //  PUSH TO FIREBASE AND CAPTURE THE KEY
         const reportsRef = ref(db, 'reports');
         const newReportRef = push(reportsRef);
         const newKey = newReportRef.key; // This is the unique ID for THIS specific post
 
-        // 2. SAVE KEY TO LOCAL STORAGE (The "Ownership Receipt")
+        // SAVE KEY TO LOCAL STORAGE (The "Ownership Receipt")
         // This allows the user to delete their own post later without an account
         const myPosts = JSON.parse(localStorage.getItem('my_posts') || "[]");
         myPosts.push(newKey);

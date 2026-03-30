@@ -55,7 +55,7 @@ p {
     position: absolute;
     left: 20px;      /* Aligns with the box above */
     width: 320px;    /* Matches width of the search box */
-    height: calc(68vh - 200px); /* Fills the rest of the screen */
+    height: calc(75vh - 200px); /* Fills the rest of the screen */
     z-index: 10;
     background: rgba(15, 15, 15, 0.85);
     backdrop-filter: blur(10px);
@@ -63,7 +63,7 @@ p {
     padding: 20px;
     border: 1px solid rgba(77, 184, 255, 0.3);
     overflow-y: auto; /* Adds a scrollbar if you have many matches */
-    margin-top: 640px;
+    margin-top: 660px;
 }
 
 
@@ -174,7 +174,7 @@ p {
     }
 }
 /* The 'Need' Marker (Hollow Triangle) */
-.sos-marker.need {
+.sos-marker.pulse.need {
     background-color: transparent !important; /* Removes any solid circle background */   
     height:20px;
     width:20px;
@@ -183,7 +183,7 @@ p {
 }
 
 
-sos.marker.offer {
+.sos-marker.pulse.offer {
   background-color: transparent;
   cursor: pointer;
   transition: width 0.2s, height 0.2s; /* Smooth growing/shrinking */
@@ -196,23 +196,22 @@ sos.marker.offer {
     z-index: 10;
 }
 
-/* This one rule handles both icons */
-/* This one rule handles both icons */
 @keyframes sos-marker-pulse {
   0% { 
-    transform: scale(1); 
-    filter: drop-shadow(0 0 2px rgba(255,255,255,0.5)); 
+    scale: 1; 
+    opacity: 0.8;
   }
   50% { 
-    transform: scale(1.15); /* Grows slightly */
-    filter: drop-shadow(0 0 10px rgba(255,255,255,0.8)); /* Glows */
+    scale: 1.2; 
+    opacity: 1;
+    /* We don't put the glow color here anymore; JS handles it! */
   }
   100% { 
-    transform: scale(1); 
-    filter: drop-shadow(0 0 2px rgba(255,255,255,0.5)); 
+    scale: 1; 
+    opacity: 0.8;
   }
-}
 
+}
 
 
 
