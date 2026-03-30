@@ -1,19 +1,17 @@
-
 {
   "rules": {
     "reports": {
-      
       ".read": true,
-      
-      
-      ".write": false, 
-
       "$report_id": {
-   
-        ".write": "!data.exists() && (now > (data.parent().child('last_post_time').val() + 30000))",
        
-        ".validate": "newData.hasChildren(['category', 'item', 'loc'])"
+        ".write": "now > (root.child('last_post_time').val() + 28000)",
+        
+        
+        ".validate": "newData.hasChildren(['category', 'item', 'loc', 'createdAt'])"
       }
+    },
+    "last_post_time": {
+      ".write": "!data.exists() || (now > (data.val() + 29000))"
     }
   }
 }
