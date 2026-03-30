@@ -1,14 +1,20 @@
+
 {
   "rules": {
     "reports": {
+      // 1. Anyone can see the markers
       ".read": true,
+      
+      // 2. DISABLE writing to the whole folder at once
+      ".write": false, 
+
       "$report_id": {
-        ".write": "now > (root.child('last_post_time').val() + 28000)",
-        ".validate": "newData.hasChildren(['category', 'color', 'item', 'type', 'msg', 'status', 'loc', 'createdAt'])"
+        
+        ".write": "!data.exists() && (now > (data.parent().child('last_post_time').val() + 30000))",
+        
+       
+        ".validate": "newData.hasChildren(['category', 'item', 'loc'])"
       }
-    },
-    "last_post_time": {
-      ".write": "!data.exists() || (now > (data.val() + 29000))"
     }
   }
 }
