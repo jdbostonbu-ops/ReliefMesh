@@ -2968,16 +2968,15 @@ FIREBASE: `))}restoreState_(){this.tryAuth(),this.tryAppCheck();for(let e of thi
           <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
       `,r.style.backgroundColor=`transparent`);let i=new l.default.Popup({offset:25,anchor:`bottom`}).setHTML(`
                     <div style="color: #333; font-family: sans-serif; padding: 5px; min-width: 160px;">
-                        <strong style="color:${n.color}; text-transform: uppercase; font-size:10px;">
-                            ${n.category} | ${n.type===`need`?`REQUEST`:`OFFER`}
-                        </strong>
+                        <strong style="color:${n.color}; text-transform: uppercase; font-size:10px;"
+                        >${n.category} | ${n.type===`need`?`REQUEST`:`OFFER`}</strong>
                         <h3 style="margin: 5px 0; font-size: 16px;">${n.item}</h3>
-                        <button id="btn-${e}" class="help-btn" style="width:100%; background:${n.color}; color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; cursor:pointer;">
+                        <button id="btn-${e}" class="help-btn" style="width:100%; background:${n.color}; 
+                        color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; cursor:pointer;">
                             ${n.type===`need`?`I CAN HELP`:`I NEED THIS`}
                         </button>
-                        ${isOwner?`<button id="delete-${e}" style="width:100%; margin-top:8px; background:none; border:1px solid #ff4d4d; color:#ff4d4d; padding:5px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:bold;">CANCEL MY POST</button>`:``}
                     </div>
-                `),a=new l.default.Marker({element:r,occludedOpacity:0}).setLngLat(n.loc).setPopup(i).addTo(au);ou.push(a),i.on(`open`,()=>{let t=document.getElementById(`delete-${e}`),r=document.getElementById(`btn-${e}`),a=document.querySelector(`.mapboxgl-popup-content`);if(typeof Hammer<`u`&&a){let e=new Hammer(a);e.on(`swiperight`,()=>{r&&r.click()}),e.on(`swipeleft`,()=>i.remove())}t&&t.addEventListener(`click`,t=>{t.stopPropagation(),confirm(`Permanently remove your post from the globe?`)&&kl(El(Jl,`reports/${e}`)).then(()=>{let t=myPosts.filter(t=>t!==e);localStorage.setItem(`my_posts`,JSON.stringify(t)),i.remove()}).catch(e=>console.error(`Delete failed:`,e))}),r&&r.addEventListener(`click`,()=>{r.innerText=`MISSION CLAIMED 🚀`,r.style.backgroundColor=`#4dff4d`,r.disabled=!0;let t=document.querySelector(`.empty-msg`);t&&t.remove();let i=document.getElementById(`intel-section`),a=document.getElementById(`active-mission-card`);i&&a&&(i.style.display=`block`,i.scrollIntoView({behavior:`smooth`,block:`start`}),a.innerHTML=`
+                `);au.on(`style.load`,()=>{au.setConfigProperty(`basemap`,`lightPreset`,`night`)});let a=new l.default.Marker({element:r,occludedOpacity:0}).setLngLat(n.loc).setPopup(i).addTo(au);ou.push(a),i.on(`open`,()=>{let t=document.getElementById(`btn-${e}`),r=document.querySelector(`.mapboxgl-popup-content`);if(typeof Hammer<`u`&&r){let e=new Hammer(r);e.on(`swiperight`,()=>{t&&t.click()}),e.on(`swipeleft`,()=>i.remove())}delBtn&&delBtn.addEventListener(`click`,t=>{t.stopPropagation(),confirm(`Permanently remove your post from the globe?`)&&kl(El(Jl,`reports/${e}`)).then(()=>{let t=myPosts.filter(t=>t!==e);localStorage.setItem(`my_posts`,JSON.stringify(t)),i.remove()}).catch(e=>console.error(`Delete failed:`,e))}),t&&t.addEventListener(`click`,()=>{t.innerText=`MISSION CLAIMED 🚀`,t.style.backgroundColor=`#4dff4d`,t.disabled=!0;let r=document.querySelector(`.empty-msg`);r&&r.remove();let i=document.getElementById(`intel-section`),a=document.getElementById(`active-mission-card`);i&&a&&(i.style.display=`block`,i.scrollIntoView({behavior:`smooth`,block:`start`}),a.innerHTML=`
                                 <div style="font-family: monospace; border-left: 2px solid #4db8ff; padding-left: 10px;">
                                     <p style="margin: 0; color: #4db8ff; font-weight: bold;">[ACTIVE MISSION]</p>
                                     <p style="margin: 5px 0;"><strong>TARGET:</strong> ${n.item}</p>

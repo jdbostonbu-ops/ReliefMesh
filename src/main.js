@@ -104,7 +104,7 @@ onValue(reportsRef, (snapshot) => {
             'type': 'Feature',
             'geometry': { 'type': 'Point', 'coordinates': data[key].loc }
         }));
-        
+
         if (map.getSource('reports-source')) {
             map.getSource('reports-source').setData({ 'type': 'FeatureCollection', 'features': features });
         }
@@ -146,38 +146,50 @@ onValue(reportsRef, (snapshot) => {
       `;
                   el.style.backgroundColor = 'transparent';
               } 
-
+/************************* END OF MARKER SHAPES **************************/
             const popup = new mapboxgl.Popup({ offset: 25, anchor: 'bottom' })
                 .setHTML(`
                     <div style="color: #333; font-family: sans-serif; padding: 5px; min-width: 160px;">
-                        <strong style="color:${report.color}; text-transform: uppercase; font-size:10px;">
-                            ${report.category} | ${report.type === 'need' ? 'REQUEST' : 'OFFER'}
-                        </strong>
+                        <strong style="color:${report.color}; text-transform: uppercase; font-size:10px;"
+                        >${report.category} | ${report.type === 'need' ? 'REQUEST' : 'OFFER'}</strong>
                         <h3 style="margin: 5px 0; font-size: 16px;">${report.item}</h3>
-                        <button id="btn-${key}" class="help-btn" style="width:100%; background:${report.color}; color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; cursor:pointer;">
+                        <button id="btn-${key}" class="help-btn" style="width:100%; background:${report.color}; 
+                        color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; cursor:pointer;">
                             ${report.type === 'need' ? 'I CAN HELP' : 'I NEED THIS'}
                         </button>
-                        ${isOwner ? `<button id="delete-${key}" style="width:100%; margin-top:8px; background:none; border:1px solid #ff4d4d; color:#ff4d4d; padding:5px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:bold;">CANCEL MY POST</button>` : ''}
                     </div>
                 `);
+/********************************************************** */
+              // 1. THIS GLUES THEM TO THE SURFACE
+map.on('style.load', () => {
+    map.setConfigProperty('basemap', 'lightPreset', 'night');
+});
 
-            const marker = new mapboxgl.Marker({ element: el, occludedOpacity: 0 })
+                // THIS HIDES THE Markers WHEN THEY GO BEHIND THE GLOBE
+                const marker = new mapboxgl.Marker({
+                    element: el,
+                    occludedOpacity: 0 // This makes markers 100% invisible when behind the Earth
+                    })
+
+
                 .setLngLat(report.loc)
                 .setPopup(popup)
                 .addTo(map);
-  
+            
             currentMarkers.push(marker);
 
+     // Wait for popup to open before attaching listeners
             popup.on('open', () => {
-                const delBtn = document.getElementById(`delete-${key}`);
                 const btn = document.getElementById(`btn-${key}`);
                 const popupElement = document.querySelector('.mapboxgl-popup-content');
                 
+                // Optional: Hammer.js Swipe Logic (Requires Hammer.js library in HTML)
                 if (typeof Hammer !== 'undefined' && popupElement) {
                     const hammer = new Hammer(popupElement);
                     hammer.on('swiperight', () => { if (btn) btn.click(); });
                     hammer.on('swipeleft', () => popup.remove());
                 }
+
 
                 // DELETE LOGIC
                 if (delBtn) {
