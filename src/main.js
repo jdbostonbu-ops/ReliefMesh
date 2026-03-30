@@ -2,13 +2,13 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './style.css';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, onValue, set, push, remove } from 'firebase/database';
+import { getDatabase, ref, onValue, set, push,remove } from 'firebase/database';
 import confetti from 'canvas-confetti';
 
 //  FIREBASE CONFIGURATION
 const firebaseConfig = {
   apiKey: "AIzaSyAcyZo3pNQMeq3f2nWj7ubgzKFt96BMtv0",
-  authDomain: "://firebaseapp.com",
+  authDomain: "reliefmesh-ce8fd.firebaseapp.com",
   projectId: "reliefmesh-ce8fd",
   storageBucket: "reliefmesh-ce8fd.firebasestorage.app",
   messagingSenderId: "733310520698",
@@ -89,6 +89,8 @@ map.on('style.load', () => {
     });
 });
 
+/************************************************ */
+let currentPostType = 'offer'; 
 let currentMarkers = [];
 
 // 1. THE LISTENER (Reading from Firebase)
@@ -107,14 +109,8 @@ onValue(reportsRef, (snapshot) => {
             map.getSource('reports-source').setData({ 'type': 'FeatureCollection', 'features': features });
         }
 
-         Object.keys(data).forEach(key => {
-              const report = data[key];
-  
-              const isClaimed = report.status === 'claimed';
-  
-              // OWNERSHIP CHECK
-              const myPosts = JSON.parse(localStorage.getItem('my_posts') || "[]");
-              const isOwner = myPosts.includes(key);
+        Object.keys(data).forEach(key => {
+            const report = data[key];
   
               const el = document.createElement('div');
               el.className = 'sos-marker pulse';
