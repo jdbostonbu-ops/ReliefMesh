@@ -2,13 +2,13 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './style.css';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, onValue, set, push, remove, update } from 'firebase/database';
+import { getDatabase, ref, onValue, set, push, remove } from 'firebase/database';
 import confetti from 'canvas-confetti';
 
 //  FIREBASE CONFIGURATION
 const firebaseConfig = {
   apiKey: "AIzaSyAcyZo3pNQMeq3f2nWj7ubgzKFt96BMtv0",
-  authDomain: "reliefmesh-ce8fd.firebaseapp.com",
+  authDomain: "://firebaseapp.com",
   projectId: "reliefmesh-ce8fd",
   storageBucket: "reliefmesh-ce8fd.firebasestorage.app",
   messagingSenderId: "733310520698",
@@ -52,7 +52,7 @@ const map = new mapboxgl.Map({
     }
 });
 
-// ATMOSPHERE & HEATMAP
+// 4. ATMOSPHERE & HEATMAP
 map.on('style.load', () => {
     
     // Set the Space/Atmosphere 
@@ -89,10 +89,7 @@ map.on('style.load', () => {
     });
 });
 
-/************************************************ */
-let currentPostType = 'offer'; 
 let currentMarkers = [];
-
 
 // 1. THE LISTENER (Reading from Firebase)
 const reportsRef = ref(db, 'reports');
@@ -106,58 +103,57 @@ onValue(reportsRef, (snapshot) => {
             'type': 'Feature',
             'geometry': { 'type': 'Point', 'coordinates': data[key].loc }
         }));
-
         if (map.getSource('reports-source')) {
             map.getSource('reports-source').setData({ 'type': 'FeatureCollection', 'features': features });
         }
 
-        Object.keys(data).forEach(key => {
-            const report = data[key];
-
-            const isClaimed = report.status === 'claimed';
-
-            // OWNERSHIP CHECK
-            const myPosts = JSON.parse(localStorage.getItem('my_posts') || "[]");
-            const isOwner = myPosts.includes(key);
-
-            const el = document.createElement('div');
-            el.className = 'sos-marker pulse';
-            /** THE INITIAL DYNAMIC GLOW-ADDED THREE LAYERS FOR INTENSITY **/
-            if (isClaimed) {
-            el.style.filter = 'grayscale(1) opacity(0.4)'; // Gray and faded
-            el.classList.remove('pulse'); // Stop the pulsing for claimed missions
-        } else {
-            el.style.filter = `
-            drop-shadow(0 0 8px ${report.color}) 
-            drop-shadow(0 0 25px ${report.color}) 
-            drop-shadow(0 0 50px ${report.color}44)`;
-            }
-            /*** THE LISTENERS UPON HOVER OVER ***/
-            el.addEventListener('mouseenter', () => {
-            el.style.filter = `drop-shadow(0 0 8px ${report.color}) drop-shadow(0 0 20px ${report.color})`;
-            el.style.zIndex = '1000'; 
-    });
-
-            el.addEventListener('mouseleave', () => {
-            el.style.filter = `drop-shadow(0 0 5px ${report.color}) drop-shadow(0 0 10px ${report.color}66)`;
-            el.style.zIndex = ''; 
-    });
-            // --- FORMING TRIANGLES / CIRCLES ---
-            if (report.type === 'need') {
-                el.classList.add('need');
-                el.innerHTML = `
-                    <svg xmlns="http://www.w3.org" fill="${report.color}33" viewBox="0 0 24 24" stroke-width="1.5" stroke="${report.color}" style="width: 32px; height: 32px;">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-                    </svg>`;
-                el.style.backgroundColor = 'transparent';
-            } else {
-                el.classList.add('offer');
-                 el.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" fill="${report.color}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${report.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-    `;
-                el.style.backgroundColor = 'transparent';
-            }
+         Object.keys(data).forEach(key => {
+              const report = data[key];
+  
+              const isClaimed = report.status === 'claimed';
+  
+              // OWNERSHIP CHECK
+              const myPosts = JSON.parse(localStorage.getItem('my_posts') || "[]");
+              const isOwner = myPosts.includes(key);
+  
+              const el = document.createElement('div');
+              el.className = 'sos-marker pulse';
+              /** THE INITIAL DYNAMIC GLOW-ADDED THREE LAYERS FOR INTENSITY **/
+              if (isClaimed) {
+              el.style.filter = 'grayscale(1) opacity(0.4)'; // Gray and faded
+              el.classList.remove('pulse'); // Stop the pulsing for claimed missions
+          } else {
+              el.style.filter = `
+              drop-shadow(0 0 8px ${report.color}) 
+              drop-shadow(0 0 25px ${report.color}) 
+              drop-shadow(0 0 50px ${report.color}44)`;
+              }
+              /*** THE LISTENERS UPON HOVER OVER ***/
+              el.addEventListener('mouseenter', () => {
+              el.style.filter = `drop-shadow(0 0 8px ${report.color}) drop-shadow(0 0 20px ${report.color})`;
+              el.style.zIndex = '1000'; 
+      });
+  
+              el.addEventListener('mouseleave', () => {
+              el.style.filter = `drop-shadow(0 0 5px ${report.color}) drop-shadow(0 0 10px ${report.color}66)`;
+              el.style.zIndex = ''; 
+      });
+              // --- FORMING TRIANGLES / CIRCLES ---
+              if (report.type === 'need') {
+                  el.classList.add('need');
+                  el.innerHTML = `
+                      <svg xmlns="http://w3.org" fill="${report.color}33" viewBox="0 0 24 24" stroke-width="1.5" stroke="${report.color}" style="width: 32px; height: 32px;">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                      </svg>`;
+                  el.style.backgroundColor = 'transparent';
+              } else {
+                  el.classList.add('offer');
+                   el.innerHTML = `
+          <svg xmlns="http://w3.org/2000/svg" fill="${report.color}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${report.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+      `;
+                  el.style.backgroundColor = 'transparent';
+              } 
 
             const popup = new mapboxgl.Popup({ offset: 25, anchor: 'bottom' })
                 .setHTML(`
@@ -177,7 +173,7 @@ onValue(reportsRef, (snapshot) => {
                 .setLngLat(report.loc)
                 .setPopup(popup)
                 .addTo(map);
-            
+  
             currentMarkers.push(marker);
 
             popup.on('open', () => {
@@ -209,8 +205,7 @@ onValue(reportsRef, (snapshot) => {
 
                 if (btn) {
                     btn.addEventListener('click', () => {
-                        update(ref(db, `reports/${key}`), { status: 'claimed' });
-
+                        // 1. UI Update
                         btn.innerText = "MISSION CLAIMED 🚀";
                         btn.style.backgroundColor = "#4dff4d";
                         btn.disabled = true;
@@ -218,6 +213,7 @@ onValue(reportsRef, (snapshot) => {
                         const emptyMsg = document.querySelector('.empty-msg');
                         if (emptyMsg) emptyMsg.remove();
 
+                        // Open Mission Intel Section
                         const intelSection = document.getElementById('intel-section');
                         const missionCard = document.getElementById('active-mission-card');
                         
@@ -225,58 +221,68 @@ onValue(reportsRef, (snapshot) => {
                             intelSection.style.display = 'block';
                             intelSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
+                            // COORDINATE FIX: report.loc is an array [lng, lat]
                             missionCard.innerHTML = `
                                 <div style="font-family: monospace; border-left: 2px solid #4db8ff; padding-left: 10px;">
                                     <p style="margin: 0; color: #4db8ff; font-weight: bold;">[ACTIVE MISSION]</p>
                                     <p style="margin: 5px 0;"><strong>TARGET:</strong> ${report.item}</p>
                                     <p style="margin: 5px 0;"><strong>STATUS:</strong> <span style="color: #4dff4d;">EN ROUTE</span></p>
                                     <p style="margin: 5px 0; font-size: 11px; opacity: 0.7;">COORDS: ${report.loc[0].toFixed(4)}, ${report.loc[1].toFixed(4)}</p>
-                                    <button id="complete-${key}" style="width:100%; margin-top:10px; padding:8px; background:#4db8ff; border:none; border-radius:4px; font-weight:bold; cursor:pointer; color:black;">MARK AS RECEIVED</button>
+                                    <button id="complete-${key}" style="width:100%; margin-top:10px; padding:8px; background:#4db8ff; 
+                                    border:none; border-radius:4px; font-weight:bold; cursor:pointer; color:black;">MARK AS RECEIVED</button>
                                 </div>
                             `;
 
                             document.getElementById(`complete-${key}`).addEventListener('click', () => {
                                 const duration = 3 * 1000;
                                 const end = Date.now() + duration;
+                            
                                 (function frame() {
-                                    confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#4db8ff', '#4dff4d', '#ffffff'] });
-                                    confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#4db8ff', '#4dff4d', '#ffffff'] });
-                                    if (Date.now() < end) requestAnimationFrame(frame);
+                                    confetti({
+                                        particleCount: 3,
+                                        angle: 60,
+                                        spread: 55,
+                                        origin: { x: 0 },
+                                        colors: ['#4db8ff', '#4dff4d', '#ffffff']
+                                    });
+                                    confetti({
+                                        particleCount: 3,
+                                        angle: 120,
+                                        spread: 55,
+                                        origin: { x: 1 },
+                                        colors: ['#4db8ff', '#4dff4d', '#ffffff']
+                                    });
+                            
+                                    if (Date.now() < end) {
+                                        requestAnimationFrame(frame);
+                                    }
                                 }());
-
+                            
                                 const completeBtn = document.getElementById(`complete-${key}`);
                                 completeBtn.innerText = "MISSION LOGGED! ✅";
                                 completeBtn.style.backgroundColor = "#4dff4d";
-
+                            
                                 setTimeout(() => {
-                                    if (intelSection) intelSection.style.display = 'none';
+                                    const intelSection = document.getElementById('intel-section');
+                                    if (intelSection) {
+                                        intelSection.style.display = 'none';
+                                    }
                                 }, 2500); 
                             });
-                        }
+                        } 
 
-/* Sidebar Logic */
-const matchEntry = document.createElement('div');
-matchEntry.className = 'match-item';
-matchEntry.innerHTML = `
-    <div style="border-left: 4px solid ${report.color}; padding: 10px; margin-top: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
-        <h4 style="margin:0;">${report.item}</h4>
-        <p style="margin:4px 0; font-size:11px;">Category: ${report.category}</p>
-        <button onclick="
-            // TELL FIREBASE THE MISSION IS ACTIVE AGAIN
-            // We use 'update' to set the status back to null or 'active'
-            import('firebase/database').then(({ ref, update, getDatabase }) => {
-                const db = getDatabase();
-                update(ref(db, 'reports/${key}'), { claimedBy: null, status: 'active' });
-            });
-
-            // CLEAN UP THE UI
-            this.parentElement.remove(); 
-            document.getElementById('match-count').innerText = document.querySelectorAll('.match-item').length;
-        " style="font-size:10px; background:none; border:1px solid #666; color:white; border-radius:2px; cursor:pointer;">
-            Release
-        </button>
-    </div>
-`;
+                        /* Sidebar */
+                        const matchEntry = document.createElement('div');
+                        matchEntry.className = 'match-item';
+                        matchEntry.innerHTML = `
+                            <div style="border-left: 4px solid ${report.color}; padding: 10px; margin-top: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
+                                <h4 style="margin:0;">${report.item}</h4>
+                                <p style="margin:4px 0; font-size:11px;">Category: ${report.category}</p>
+                                <button onclick="this.parentElement.remove(); document.getElementById('match-count')
+                                .innerText = document.querySelectorAll('.match-item').length;" style="font-size:10px; 
+                                background:none; border:1px solid #666; color:white; border-radius:2px; cursor:pointer;">Release</button>
+                            </div>
+                        `;
                         matchList.appendChild(matchEntry);
                         matchCount.innerText = document.querySelectorAll('.match-item').length;
                     });
@@ -285,6 +291,7 @@ matchEntry.innerHTML = `
         });
     }
 });
+
 
 // 3D BUILDINGS LAYER
 map.on('style.load', () => {
@@ -406,63 +413,32 @@ dropPinBtn.addEventListener('click', () => {
 
     if (!item) return alert("Please describe the need first!");
   
-    // Change cursor to crosshair
-    map.getCanvas().style.cursor = 'crosshair';
-    alert(`Ready! Click on the map to place your ${category} request.`);
+      // Change cursor to crosshair
+      map.getCanvas().style.cursor = 'crosshair';
+      alert(`Ready! Click on the map to place your ${category} request.`);
   
-    map.once('click', (e) => {
-        const { lng, lat } = e.lngLat;
-        
-        const newReport = {
-            category: category,
-            color: color,
-            item: item,
-            type: currentPostType, // Important: Ensure your script tracks if it's a 'need' or 'offer'
-            msg: `Urgent ${category} request: ${item}`,
-            loc: [lng, lat],
-        };
+      map.once('click', (e) => {
+          const { lng, lat } = e.lngLat;
+          
+          const newReport = {
+              category: category,
+              color: color,
+              item: item,
+              msg: `Urgent ${category} request: ${item}`,
+              loc: [lng, lat]
+          };
   
-        //  PUSH TO FIREBASE AND CAPTURE THE KEY
-        const reportsRef = ref(db, 'reports');
-        const newReportRef = push(reportsRef);
-        const newKey = newReportRef.key; // This is the unique ID for THIS specific post
-        const newReportKey = push(ref(db, 'reports')).key;
-
-        // SAVE KEY TO LOCAL STORAGE (The "Ownership Receipt")
-        // This allows the user to delete their own post later without an account
-        const myPosts = JSON.parse(localStorage.getItem('my_posts') || "[]");
-        myPosts.push(newKey);
-        localStorage.setItem('my_posts', JSON.stringify(myPosts));
-
-        //  SET DATA TO FIREBASE
-        set(newReportRef, newReport);
+          // Push to Firebase
+          const newReportRef = push(ref(db, 'reports'));
+          set(newReportRef, newReport);
   
-        // Reset UI
-        map.getCanvas().style.cursor = '';
-        postForm.style.display = 'none';
-        document.getElementById('item-input').value = '';
-        alert("SOS Broadcasted to Mother Earth!");
-
-        const updates = {};
-        updates[`/reports/${newReportKey}`] = newReport;
-        updates[`/last_post_time`] = serverTime; // The "Master Clock"
-
-        update(ref(db), updates)
-        .then(() => {
-            alert("SOS Broadcasted!");
-            startCooldown(30); // Start the visual countdown
-        })
-        .catch((err) => {
-            if (err.message.includes("Permission denied")) {
-                alert("⚠️ System Overloaded. Please wait for the 30-second cooldown.");
-            }
-        });
-        map.getCanvas().style.cursor = '';
-        postForm.style.display = 'none';
-
-    });
-});
-
+          // Reset UI
+          map.getCanvas().style.cursor = '';
+          postForm.style.display = 'none';
+          document.getElementById('item-input').value = '';
+          alert("SOS Broadcasted to Mother Earth!");
+      });
+  });
 
 document.getElementById('clear-matches-btn').addEventListener('click', () => {
     if (confirm("Are you sure you want to clear your mission history?")) {
