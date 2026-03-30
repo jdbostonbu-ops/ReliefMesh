@@ -1,18 +1,17 @@
-
 {
   "rules": {
     "reports": {
-      // 1. Anyone can see the markers
+      
       ".read": true,
       
-      // 2. DISABLE writing to the whole folder at once
+      
       ".write": false, 
 
       "$report_id": {
+      
+        ".write": true,
         
-        ".write": "!data.exists() && (now > (data.parent().child('last_post_time').val() + 30000))",
         
-       
         ".validate": "newData.hasChildren(['category', 'item', 'loc'])"
       }
     }
