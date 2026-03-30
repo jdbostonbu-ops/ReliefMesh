@@ -55,7 +55,7 @@ p {
     position: absolute;
     left: 20px;      /* Aligns with the box above */
     width: 320px;    /* Matches width of the search box */
-    height: calc(73vh - 200px); /* Fills the rest of the screen */
+    height: calc(68vh - 200px); /* Fills the rest of the screen */
     z-index: 10;
     background: rgba(15, 15, 15, 0.85);
     backdrop-filter: blur(10px);
@@ -63,7 +63,7 @@ p {
     padding: 20px;
     border: 1px solid rgba(77, 184, 255, 0.3);
     overflow-y: auto; /* Adds a scrollbar if you have many matches */
-    margin-top: 590px;
+    margin-top: 640px;
 }
 
 
@@ -173,46 +173,21 @@ p {
         opacity: 1;
     }
 }
-/* The 'Need' Marker (Hollow Triangle) UNSUCCESSFUL */
-/* The 'Need' Marker (Cleaned up for SVG) */
+/* The 'Need' Marker (Hollow Triangle) */
 .sos-marker.need {
-    background-color: transparent !important; /* Removes any solid circle background */
-    border-radius: 0;    
-    /* Keep your pulse! It works perfectly on the SVG */
-    animation: triangle-pulse 2s ease-in-out infinite;
-    height:24px;
-    width:24px;
+    background-color: transparent !important; /* Removes any solid circle background */   
+    height:20px;
+    width:20px;
     cursor: pointer;
-}
-
-/*animation engine in CSS. It tells the browser 
-exactly how to "grow" and "fade" the SOS signal over time.*/
-@keyframes pulse {
-  0% { 
-    box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); 
-  }
-  70% { 
-    /* Reduced from 100px to 15px for a tighter, professional pulse */
-    box-shadow: 0 0 0 calc(15px * var(--marker-scale)) rgba(255, 77, 77, 0); 
-  }
-  100% { 
-    box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); 
-  }
+    animation: marker-pulse 2s infinite ease-in-out;
 }
 
 
-
-/* The SOS Animation */
-.sos-marker.offer {
-  width: 24px; 
-  height: 24px;
-  border-radius: 50%;
+sos.marker.offer {
+  background-color: transparent;
   cursor: pointer;
-  animation: pulse 2s ease-in-out infinite;
-  box-shadow: 0 0 20px rgba(255, 77, 77, 0.8);
   transition: width 0.2s, height 0.2s; /* Smooth growing/shrinking */
-    /* This makes them visible from the North America view */
-  border: 2px solid white;
+  animation: marker-pulse 2s infinite ease-in-out;
 }
 
 /* Hover Effect for both Need/Offer */
@@ -221,8 +196,25 @@ exactly how to "grow" and "fade" the SOS signal over time.*/
     z-index: 10;
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* This one rule handles both icons */
+/* This one rule handles both icons */
+@keyframes sos-marker-pulse {
+  0% { 
+    transform: scale(1); 
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.5)); 
+  }
+  50% { 
+    transform: scale(1.15); /* Grows slightly */
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.8)); /* Glows */
+  }
+  100% { 
+    transform: scale(1); 
+    filter: drop-shadow(0 0 2px rgba(255,255,255,0.5)); 
+  }
 }
+
+
+
+
+
+
