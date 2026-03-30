@@ -90,7 +90,6 @@ map.on('style.load', () => {
 });
 
 /************************************************ */
-let currentPostType = 'offer'; 
 let currentMarkers = [];
 
 // 1. THE LISTENER (Reading from Firebase)
@@ -105,6 +104,7 @@ onValue(reportsRef, (snapshot) => {
             'type': 'Feature',
             'geometry': { 'type': 'Point', 'coordinates': data[key].loc }
         }));
+        
         if (map.getSource('reports-source')) {
             map.getSource('reports-source').setData({ 'type': 'FeatureCollection', 'features': features });
         }
@@ -114,16 +114,12 @@ onValue(reportsRef, (snapshot) => {
   
               const el = document.createElement('div');
               el.className = 'sos-marker pulse';
-              /** THE INITIAL DYNAMIC GLOW-ADDED THREE LAYERS FOR INTENSITY **/
-              if (isClaimed) {
-              el.style.filter = 'grayscale(1) opacity(0.4)'; // Gray and faded
-              el.classList.remove('pulse'); // Stop the pulsing for claimed missions
-          } else {
+            
               el.style.filter = `
               drop-shadow(0 0 8px ${report.color}) 
               drop-shadow(0 0 25px ${report.color}) 
               drop-shadow(0 0 50px ${report.color}44)`;
-              }
+              
               /*** THE LISTENERS UPON HOVER OVER ***/
               el.addEventListener('mouseenter', () => {
               el.style.filter = `drop-shadow(0 0 8px ${report.color}) drop-shadow(0 0 20px ${report.color})`;
