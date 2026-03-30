@@ -38,30 +38,6 @@ p {
   background-color: #111; /* Shows dark if the map is still loading */
 }
 
-/* The SOS Animation */
-.sos-marker {
-  width: calc(12px * var(--marker-scale)); 
-  height: calc(12px * var(--marker-scale));
-  background-color: #ff4d4d;
-  border-radius: 50%;
-  cursor: pointer;
-  box-shadow: 0 0 20px rgba(255, 77, 77, 0.8);
-  position: relative;
-  transition: width 0.2s, height 0.2s; /* Smooth growing/shrinking */
-
-  cursor: pointer;
-  z-index: 999; /* Force them to the front */
-    /* This makes them visible from the North America view */
-  border: 2px solid white;
-}
-
-/* Hover Effect for both Need/Offer */
-.sos-marker:hover {
-    transform: scale(1.3);
-    z-index: 10;
-}
-
-
 .overlay {
     position: absolute;
     top: 20px;       /* Starts at the very top */
@@ -90,19 +66,6 @@ p {
     margin-top: 590px;
 }
 
-
-
-
-/*animation engine in CSS. It tells the browser 
-exactly how to "grow" and "fade" the SOS signal over time.*/
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); }
-  70% { 
-    /* Make the ripple massive (100px) so it's seen from the Globe view */
-    box-shadow: 0 0 0 calc(100px * var(--marker-scale)) rgba(255, 77, 77, 0); 
-  }
-  100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
-}
 
 .mapboxgl-ctrl-top-right {
     top: 20px !important;
@@ -214,22 +177,48 @@ exactly how to "grow" and "fade" the SOS signal over time.*/
 /* The 'Need' Marker (Cleaned up for SVG) */
 .sos-marker.need {
     background-color: transparent !important; /* Removes any solid circle background */
-    border: none !important;                 /* Removes any circular borders */
-    width: 32px; 
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
+    border-radius: 0;    
     /* Keep your pulse! It works perfectly on the SVG */
     animation: triangle-pulse 2s ease-in-out infinite;
+    height:24px;
+    width:24px;
+    cursor: pointer;
+}
+
+/*animation engine in CSS. It tells the browser 
+exactly how to "grow" and "fade" the SOS signal over time.*/
+@keyframes pulse {
+  0% { 
+    box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); 
+  }
+  70% { 
+    /* Reduced from 100px to 15px for a tighter, professional pulse */
+    box-shadow: 0 0 0 calc(15px * var(--marker-scale)) rgba(255, 77, 77, 0); 
+  }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); 
+  }
 }
 
 
-@keyframes triangle-pulse {
-    0% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3); opacity: 0.6; } /* Slightly bigger for urgency */
-    100% { transform: scale(1); opacity: 1; }
+
+/* The SOS Animation */
+.sos-marker.offer {
+  width: 24px; 
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  animation: pulse 2s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(255, 77, 77, 0.8);
+  transition: width 0.2s, height 0.2s; /* Smooth growing/shrinking */
+    /* This makes them visible from the North America view */
+  border: 2px solid white;
+}
+
+/* Hover Effect for both Need/Offer */
+.sos-marker:hover {
+    transform: scale(1.3);
+    z-index: 10;
 }
 
 * {
@@ -237,4 +226,3 @@ exactly how to "grow" and "fade" the SOS signal over time.*/
   padding: 0;
   box-sizing: border-box;
 }
-
