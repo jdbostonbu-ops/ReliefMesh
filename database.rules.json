@@ -3,11 +3,8 @@
     "reports": {
       ".read": true,
       "$report_id": {
-      
         ".write": "now > (root.child('last_post_time').val() + 28000)",
-        
-        
-        ".validate": "newData.hasChildren(['category', 'item', 'loc', 'createdAt', 'type', 'msg', 'status'])"
+        ".validate": "newData.hasChildren(['category', 'color', 'item', 'type', 'msg', 'status', 'loc', 'createdAt'])"
       }
     },
     "last_post_time": {
