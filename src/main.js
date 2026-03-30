@@ -2,7 +2,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './style.css';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, onValue, set, push, remove, update } from 'firebase/database';
+import { getDatabase, ref, onValue, push, remove, update } from 'firebase/database';
 import confetti from 'canvas-confetti';
 
 //  FIREBASE CONFIGURATION
