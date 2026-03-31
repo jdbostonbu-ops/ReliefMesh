@@ -418,8 +418,16 @@ dropPinBtn.addEventListener('click', () => {
   
           // Push to Firebase
           const newReportRef = push(ref(db, 'reports'));
+          const newKey = newReportRef.key; // This is the unique ID for THIS specific post
+          
+
+            // This allows the user to delete their own post later without an account
+          const myPosts = JSON.parse(localStorage.getItem('my_posts') || "[]");
+          myPosts.push(newKey);
+          localStorage.setItem('my_posts', JSON.stringify(myPosts));
+
           set(newReportRef, newReport);
-  
+
           // Reset UI
           map.getCanvas().style.cursor = '';
           postForm.style.display = 'none';
