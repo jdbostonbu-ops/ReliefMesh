@@ -8,7 +8,7 @@ import confetti from 'canvas-confetti';
 //  FIREBASE CONFIGURATION
 const firebaseConfig = {
   apiKey: "AIzaSyAcyZo3pNQMeq3f2nWj7ubgzKFt96BMtv0",
-  authDomain: "reliefmesh-ce8fd.firebaseapp.com",
+  authDomain: "://firebaseapp.com",
   projectId: "reliefmesh-ce8fd",
   storageBucket: "reliefmesh-ce8fd.firebasestorage.app",
   messagingSenderId: "733310520698",
@@ -111,31 +111,31 @@ onValue(reportsRef, (snapshot) => {
 
         Object.keys(data).forEach(key => {
             const report = data[key];
-/*************************************** FORMING "TRIANGLES"/ ONLY CIRCLE MARKERS ***************************************/
-const el = document.createElement('div');
-el.className = 'sos-marker pulse';
+            const myPosts = JSON.parse(localStorage.getItem('my_posts') || "[]");
+            const isOwner = myPosts.includes(key);
 
- el.style.filter = `
-            drop-shadow(0 0 8px ${report.color}) 
-            drop-shadow(0 0 25px ${report.color}) 
-            drop-shadow(0 0 50px ${report.color}44)`;
+            /*************************************** FORMING MARKERS ***************************************/
+            const el = document.createElement('div');
+            el.className = 'sos-marker pulse';
 
-if (report.type === 'need') {
-    el.classList.add('need');
-    
-    el.innerHTML = `
-        <svg xmlns="http://www.w3.org" fill="${report.color}33" viewBox="0 0 24 24" stroke-width="1.5" stroke="${report.color}" style="width: 32px; height: 32px;">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-        </svg>`;
-    el.style.backgroundColor = 'transparent';
+            el.style.filter = `
+                drop-shadow(0 0 8px ${report.color}) 
+                drop-shadow(0 0 25px ${report.color}) 
+                drop-shadow(0 0 50px ${report.color}44)`;
 
-} else {
-    el.classList.add('offer');
-    el.innerHTML = ` <svg xmlns="http://www.w3.org/2000/svg" fill="${report.color}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${report.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>`
-    el.style.backgroundColor = 'transparent';
-}
-/*************************************************"Triangle"/Circle End *********************************/
+            if (report.type === 'need') {
+                el.classList.add('need');
+                el.innerHTML = `
+                    <svg xmlns="http://w3.org" fill="${report.color}33" viewBox="0 0 24 24" stroke-width="1.5" stroke="${report.color}" style="width: 32px; height: 32px;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+                    </svg>`;
+                el.style.backgroundColor = 'transparent';
+            } else {
+                el.classList.add('offer');
+                el.innerHTML = ` <svg xmlns="http://w3.org/2000/svg" fill="${report.color}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${report.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>`;
+                el.style.backgroundColor = 'transparent';
+            }
 
             const popup = new mapboxgl.Popup({ offset: 25, anchor: 'bottom' })
                 .setHTML(`
@@ -150,15 +150,14 @@ if (report.type === 'need') {
                         ${isOwner ? `<button id="delete-${key}" style="width:100%; margin-top:8px; background:none; border:1px solid #ff4d4d; color:#ff4d4d; padding:5px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:bold;">CANCEL MY POST</button>` : ''}
                     </div>
                 `);
-/********************************************************** */
-           const marker = new mapboxgl.Marker({ element: el, occludedOpacity: 0 })
+
+            const marker = new mapboxgl.Marker({ element: el, occludedOpacity: 0 })
                 .setLngLat(report.loc)
                 .setPopup(popup)
                 .addTo(map);
             
             currentMarkers.push(marker);
 
-     // Wait for popup to open before attaching listeners
             popup.on('open', () => {
                 const delBtn = document.getElementById(`delete-${key}`);
                 const btn = document.getElementById(`btn-${key}`);
@@ -170,7 +169,6 @@ if (report.type === 'need') {
                     hammer.on('swipeleft', () => popup.remove());
                 }
 
-                // DELETE LOGIC
                 if (delBtn) {
                     delBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
@@ -189,7 +187,6 @@ if (report.type === 'need') {
                 if (btn) {
                     btn.addEventListener('click', () => {
                         update(ref(db, `reports/${key}`), { status: 'claimed' });
-                        // 1. UI Update
                         btn.innerText = "MISSION CLAIMED 🚀";
                         btn.style.backgroundColor = "#4dff4d";
                         btn.disabled = true;
@@ -197,7 +194,6 @@ if (report.type === 'need') {
                         const emptyMsg = document.querySelector('.empty-msg');
                         if (emptyMsg) emptyMsg.remove();
 
-                        // Open Mission Intel Section
                         const intelSection = document.getElementById('intel-section');
                         const missionCard = document.getElementById('active-mission-card');
                         
@@ -205,7 +201,6 @@ if (report.type === 'need') {
                             intelSection.style.display = 'block';
                             intelSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-                            // COORDINATE FIX: report.loc is an array [lng, lat]
                             missionCard.innerHTML = `
                                 <div style="font-family: monospace; border-left: 2px solid #4db8ff; padding-left: 10px;">
                                     <p style="margin: 0; color: #4db8ff; font-weight: bold;">[ACTIVE MISSION]</p>
@@ -217,58 +212,34 @@ if (report.type === 'need') {
                                 </div>
                             `;
 
-                        document.getElementById(`complete-${key}`).addEventListener('click', () => {
-                            // Start the Left/Right Confetti "Rain"
-                            const duration = 3 * 1000;
-                            const end = Date.now() + duration;
-                        
-                            (function frame() {
-                                confetti({
-                                    particleCount: 3,
-                                    angle: 60,
-                                    spread: 55,
-                                    origin: { x: 0 },
-                                    colors: ['#4db8ff', '#4dff4d', '#ffffff']
-                                });
-                                confetti({
-                                    particleCount: 3,
-                                    angle: 120,
-                                    spread: 55,
-                                    origin: { x: 1 },
-                                    colors: ['#4db8ff', '#4dff4d', '#ffffff']
-                                });
-                        
-                                if (Date.now() < end) {
-                                    requestAnimationFrame(frame);
-                                }
-                            }());
-                        
-                            // Visual Feedback on the Button
-                            const btn = document.getElementById(`complete-${key}`);
-                            btn.innerText = "MISSION LOGGED! ✅";
-                            btn.style.backgroundColor = "#4dff4d";
-                        
-                            // The "Glory Delay" (Replaces the alert)
-                            // We wait 2.5 seconds so they can see the confetti rain before the card disappears
-                            setTimeout(() => {
-                                const intelSection = document.getElementById('intel-section');
-                                if (intelSection) {
-                                    intelSection.style.display = 'none';
-                                }
-                            }, 2500); 
-                        });
-                        
+                            document.getElementById(`complete-${key}`).addEventListener('click', () => {
+                                const duration = 3 * 1000;
+                                const end = Date.now() + duration;
+                            
+                                (function frame() {
+                                    confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#4db8ff', '#4dff4d', '#ffffff'] });
+                                    confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#4db8ff', '#4dff4d', '#ffffff'] });
+                                    if (Date.now() < end) requestAnimationFrame(frame);
+                                }());
+                            
+                                const cBtn = document.getElementById(`complete-${key}`);
+                                cBtn.innerText = "MISSION LOGGED! ✅";
+                                cBtn.style.backgroundColor = "#4dff4d";
+                            
+                                setTimeout(() => {
+                                    if (intelSection) intelSection.style.display = 'none';
+                                }, 2500); 
+                            });
                         } 
-                    /* Sidebar */
-                     const matchEntry = document.createElement('div');
+
+                        const matchEntry = document.createElement('div');
                         matchEntry.className = 'match-item';
                         matchEntry.innerHTML = `
                             <div style="border-left: 4px solid ${report.color}; padding: 10px; margin-top: 10px; background: rgba(255,255,255,0.05); border-radius: 4px;">
                                 <h4 style="margin:0;">${report.item}</h4>
                                 <p style="margin:4px 0; font-size:11px;">Category: ${report.category}</p>
-                                <button onclick="this.parentElement.remove(); document.getElementById('match-count')
-                                .innerText = document.querySelectorAll('.match-item').length;" style="font-size:10px; 
-                                background:none; border:1px solid #666; color:white; border-radius:2px; cursor:pointer;">Release</button>
+                                <button onclick="this.parentElement.remove(); document.getElementById('match-count').innerText = document.querySelectorAll('.match-item').length;" 
+                                style="font-size:10px; background:none; border:1px solid #666; color:white; border-radius:2px; cursor:pointer;">Release</button>
                             </div>
                         `;
                         matchList.appendChild(matchEntry);
@@ -311,58 +282,26 @@ clearBtn.addEventListener('click', () => {
     zipInput.focus();
 });
 
-// SEARCH & FORM LOGIC
-
 searchBtn.addEventListener('click', () => {
     const query = zipInput.value;
     if (!query) return;
-    
-    // Added /geocoding/v5/mapbox.places/ to the URL
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${mapboxgl.accessToken}&limit=1`;
-
-        
+    const url = `https://mapbox.com{encodeURIComponent(query)}.json?access_token=${mapboxgl.accessToken}&limit=1`;
     fetch(url)
-        .then(response => {
-            if (!response.ok) throw new Error("Search API error - Check token scopes");
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
-            // Standardized the way we grab coordinates for the Globe
             if (data.features && data.features.length > 0) {
-                const feature = data.features[0];
-                const [lng, lat] = feature.center;
-
-                console.log(`Flying to: ${feature.place_name}`);
-
-                map.flyTo({ 
-                    center: [lng, lat], 
-                    zoom: 12, 
-                    pitch: 45, 
-                    essential: true, 
-                    duration: 3000 
-                });
+                const [lng, lat] = data.features[0].center;
+                map.flyTo({ center: [lng, lat], zoom: 12, pitch: 45, essential: true, duration: 3000 });
             } else {
-                alert("Location not found. Try a city name or zip code.");
+                alert("Location not found.");
             }
-        })
-        .catch(err => {
-            console.error("Search Error:", err);
-            alert("Search failed. Check your internet or token.");
         });
 });
 
 resetViewBtn.addEventListener('click', () => {
-    map.flyTo({
-        center: [-98.57, 39.82], // Back to North America
-        zoom: 3,
-        pitch: 0,
-        bearing: 0,
-        essential: true,
-        duration: 3000
-    });
+    map.flyTo({ center: [-98.57, 39.82], zoom: 3, pitch: 0, bearing: 0, essential: true, duration: 3000 });
 });
 
-//  ZOOM & SCALE LISTENER
 map.on('zoom', () => {
     const zoom = map.getZoom();
     const newScale = zoom < 5 ? 3 : (zoom < 10 ? 1.5 : 1);
@@ -371,27 +310,22 @@ map.on('zoom', () => {
 
 map.addControl(new mapboxgl.NavigationControl());
 
-// *********************************************** //
 postOfferBtn.addEventListener('click', () => {
-    currentPostType = 'offer'; // Sets the switch
+    currentPostType = 'offer';
     postForm.style.display = 'block';
     dropPinBtn.innerText = "DROP OFFER ON MAP";
-    dropPinBtn.style.background = "#4dff4d"; // Green for Offer
+    dropPinBtn.style.background = "#4dff4d";
     dropPinBtn.style.color = "black";
 });
 
-
 postNeedBtn.addEventListener('click', () => {
-    currentPostType = 'need'; // Sets the switch
+    currentPostType = 'need';
     postForm.style.display = 'block';
     dropPinBtn.innerText = "DROP NEED ON MAP";
-    dropPinBtn.style.background = "#ff4d4d"; // Red for Need
+    dropPinBtn.style.background = "#ff4d4d";
     dropPinBtn.style.color = "white";
 });
 
-/************************************************** */
-
-// The actual "Drop" logic
 dropPinBtn.addEventListener('click', () => {
     const item = document.getElementById('item-input').value;
     const select = document.getElementById('category-select');
@@ -399,108 +333,41 @@ dropPinBtn.addEventListener('click', () => {
     const color = select.options[select.selectedIndex].getAttribute('data-color');
 
     if (!item) return alert("Please describe the need first!");
-  
-      // Change cursor to crosshair
-      map.getCanvas().style.cursor = 'crosshair';
-      alert(`Ready! Click on the map to place your ${category} request.`);
-  
-      map.once('click', (e) => {
-          const { lng, lat } = e.lngLat;
-          
-          const newReport = {
-              category: category,
-              color: color,
-              item: item,
-              type: currentPostType,
-              msg: `Urgent ${category} request: ${item}`,
-              loc: [lng, lat]
-          };
-  
-          // Push to Firebase
-          const newReportRef = push(ref(db, 'reports'));
-          const newKey = newReportRef.key; // This is the unique ID for THIS specific post
-          
+    map.getCanvas().style.cursor = 'crosshair';
+    alert(`Ready! Click on the map to place your ${category} request.`);
 
-            // This allows the user to delete their own post later without an account
-          const myPosts = JSON.parse(localStorage.getItem('my_posts') || "[]");
-          myPosts.push(newKey);
-          localStorage.setItem('my_posts', JSON.stringify(myPosts));
-
-          set(newReportRef, newReport);
-
-          // Reset UI
-          map.getCanvas().style.cursor = '';
-          postForm.style.display = 'none';
-          document.getElementById('item-input').value = '';
-          alert("SOS Broadcasted to Mother Earth!");
-      });
-  });
-
-document.getElementById('clear-matches-btn').addEventListener('click', () => {
-    if (confirm("Are you sure you want to clear your mission history?")) {
-        // Wipe the match list
-        const matchList = document.getElementById('match-list');
-        matchList.innerHTML = '<p class="empty-msg" style="color: #fff; opacity: 0.7;">No active matches yet. Swipe on a marker to help!</p>';
-        
-        // Hide the Intel box
-        document.getElementById('intel-section').style.display = 'none';
-        
-        // Reset the counter to 0
-        document.getElementById('match-count').innerText = '0';
-        
-        alert("All missions cleared. System reset.");
-    }
-});
-
-document.getElementById('reset-view-btn').addEventListener('click', () => {
-    map.flyTo({
-        center: [-98.57, 39.82], // Back to North America center
-        zoom: 3,                 // Back to space
-        pitch: 0,                // Look straight down (removes 3D tilt)
-        bearing: 0,              // Reset rotation to North
-        essential: true,
-        duration: 3000           // A smooth 3-second flight
+    map.once('click', (e) => {
+        const { lng, lat } = e.lngLat;
+        const newReport = { category, color, item, type: currentPostType, msg: `Urgent ${category}: ${item}`, loc: [lng, lat] };
+        const newReportRef = push(ref(db, 'reports'));
+        const myPosts = JSON.parse(localStorage.getItem('my_posts') || "[]");
+        myPosts.push(newReportRef.key);
+        localStorage.setItem('my_posts', JSON.stringify(myPosts));
+        set(newReportRef, newReport);
+        map.getCanvas().style.cursor = '';
+        postForm.style.display = 'none';
+        document.getElementById('item-input').value = '';
     });
 });
 
-
-// 🌍 THE AUTO-ROTATE ENGINE
-// Setup Variables
-let userInteracting = false;
-const maxSpinZoom = 5; // Rotation stops if you zoom in past this
-const msPerRotation = 120000; // Time for one full spin (2 minutes)
-
-// The Rotation Engine
-function spinGlobe() {
-    const zoom = map.getZoom();
-    if (!userInteracting && zoom < maxSpinZoom) {
-        let distancePerSecond = 360 / (msPerRotation / 1000);
-        const center = map.getCenter();
-        center.lng -= distancePerSecond; // Drift left
-
-        map.easeTo({ 
-            center, 
-            duration: 1000, 
-            easing: (n) => n, 
-            essential: true 
-        });
+document.getElementById('clear-matches-btn').addEventListener('click', () => {
+    if (confirm("Are you sure?")) {
+        document.getElementById('match-list').innerHTML = '<p class="empty-msg">No active missions.</p>';
+        document.getElementById('intel-section').style.display = 'none';
+        document.getElementById('match-count').innerText = '0';
     }
-}
-
-// EVENT LISTENERS: The "Green Light" for the engine
-// Stop when touching
-map.on('mousedown', () => { userInteracting = true; });
-
-// Restart when released or finished moving
-map.on('mouseup', () => { userInteracting = false; spinGlobe(); });
-map.on('dragend', () => { userInteracting = false; spinGlobe(); });
-map.on('pitchend', () => { userInteracting = false; spinGlobe(); });
-map.on('rotateend', () => { userInteracting = false; spinGlobe(); });
-
-// The Loop: When one 1-second 'easeTo' finishes, start the next one
-map.on('moveend', () => {
-    spinGlobe();
 });
 
-// 4. Initial start
+// 🌍 AUTO-ROTATE ENGINE
+let userInteracting = false;
+function spinGlobe() {
+    if (!userInteracting && map.getZoom() < 5) {
+        const center = map.getCenter();
+        center.lng -= (360 / 120); 
+        map.easeTo({ center, duration: 1000, easing: (n) => n, essential: true });
+    }
+}
+map.on('mousedown', () => { userInteracting = true; });
+map.on('mouseup', () => { userInteracting = false; spinGlobe(); });
+map.on('moveend', () => { spinGlobe(); });
 spinGlobe();

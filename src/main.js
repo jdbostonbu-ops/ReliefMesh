@@ -2,7 +2,7 @@ import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import './style.css';
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, onValue, set, push, remove, update } from 'firebase/database';
+import { getDatabase, ref, onValue, set, push, remove } from 'firebase/database';
 import confetti from 'canvas-confetti';
 
 //  FIREBASE CONFIGURATION
@@ -93,7 +93,7 @@ map.on('style.load', () => {
 let currentPostType = 'offer'; 
 let currentMarkers = [];
 
-// THE LISTENER (Reading from Firebase)
+// 1. THE LISTENER (Reading from Firebase)
 const reportsRef = ref(db, 'reports');
 onValue(reportsRef, (snapshot) => {
     const data = snapshot.val();
@@ -109,32 +109,50 @@ onValue(reportsRef, (snapshot) => {
             map.getSource('reports-source').setData({ 'type': 'FeatureCollection', 'features': features });
         }
 
-        Object.keys(data).forEach(key => {
-            const report = data[key];
-/*************************************** FORMING "TRIANGLES"/ ONLY CIRCLE MARKERS ***************************************/
-const el = document.createElement('div');
-el.className = 'sos-marker pulse';
+       Object.keys(data).forEach(key => {
+    const report = data[key];
 
- el.style.filter = `
-            drop-shadow(0 0 8px ${report.color}) 
-            drop-shadow(0 0 25px ${report.color}) 
-            drop-shadow(0 0 50px ${report.color}44)`;
+    const myPosts = JSON.parse(localStorage.getItem('my_posts') || "[]");
+    const isOwner = myPosts.includes(key);
 
-if (report.type === 'need') {
-    el.classList.add('need');
-    
-    el.innerHTML = `
-        <svg xmlns="http://www.w3.org" fill="${report.color}33" viewBox="0 0 24 24" stroke-width="1.5" stroke="${report.color}" style="width: 32px; height: 32px;">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-        </svg>`;
-    el.style.backgroundColor = 'transparent';
+    const el = document.createElement('div');
+    el.className = 'sos-marker pulse';
 
-} else {
-    el.classList.add('offer');
-    el.innerHTML = ` <svg xmlns="http://www.w3.org/2000/svg" fill="${report.color}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${report.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>`
-    el.style.backgroundColor = 'transparent';
-}
+    /** THE INITIAL DYNAMIC GLOW **/
+    el.style.filter = `
+        drop-shadow(0 0 8px ${report.color}) 
+        drop-shadow(0 0 25px ${report.color}) 
+        drop-shadow(0 0 50px ${report.color}44)`;
+    // STRAY BRACKET REMOVED FROM HERE
+
+    /*** THE LISTENERS UPON HOVER OVER ***/
+    el.addEventListener('mouseenter', () => {
+        el.style.filter = `drop-shadow(0 0 8px ${report.color}) drop-shadow(0 0 20px ${report.color})`;
+        el.style.zIndex = '1000'; 
+    }); // FIXED: was )}
+
+    el.addEventListener('mouseleave', () => {
+        el.style.filter = `drop-shadow(0 0 5px ${report.color}) drop-shadow(0 0 10px ${report.color}66)`;
+        el.style.zIndex = ''; 
+    }); // FIXED: was )}
+
+    // --- FORMING TRIANGLES / CIRCLES ---
+    if (report.type === 'need') {
+        el.classList.add('need');
+        el.innerHTML = `
+            <svg xmlns="http://www.w3.org" fill="${report.color}33" viewBox="0 0 24 24" stroke-width="1.5" stroke="${report.color}" style="width: 32px; height: 32px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+            </svg>`;
+        el.style.backgroundColor = 'transparent';
+    } else {
+        el.classList.add('offer');
+        el.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" fill="${report.color}" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${report.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+        `;
+        el.style.backgroundColor = 'transparent';
+    }
+
 /*************************************************"Triangle"/Circle End *********************************/
 
             const popup = new mapboxgl.Popup({ offset: 25, anchor: 'bottom' })
@@ -151,7 +169,8 @@ if (report.type === 'need') {
                     </div>
                 `);
 /********************************************************** */
-           const marker = new mapboxgl.Marker({ element: el, occludedOpacity: 0 })
+              // 1. THIS GLUES THEM TO THE SURFACE
+const marker = new mapboxgl.Marker({ element: el, occludedOpacity: 0 })
                 .setLngLat(report.loc)
                 .setPopup(popup)
                 .addTo(map);
@@ -164,7 +183,7 @@ if (report.type === 'need') {
                 const btn = document.getElementById(`btn-${key}`);
                 const popupElement = document.querySelector('.mapboxgl-popup-content');
                 
-                if (typeof Hammer !== 'undefined' && popupElement) {
+                 if (typeof Hammer !== 'undefined' && popupElement) {
                     const hammer = new Hammer(popupElement);
                     hammer.on('swiperight', () => { if (btn) btn.click(); });
                     hammer.on('swipeleft', () => popup.remove());
@@ -188,7 +207,6 @@ if (report.type === 'need') {
 
                 if (btn) {
                     btn.addEventListener('click', () => {
-                        update(ref(db, `reports/${key}`), { status: 'claimed' });
                         // 1. UI Update
                         btn.innerText = "MISSION CLAIMED 🚀";
                         btn.style.backgroundColor = "#4dff4d";
@@ -372,7 +390,7 @@ map.on('zoom', () => {
 map.addControl(new mapboxgl.NavigationControl());
 
 // *********************************************** //
-postOfferBtn.addEventListener('click', () => {
+    postOfferBtn.addEventListener('click', () => {
     currentPostType = 'offer'; // Sets the switch
     postForm.style.display = 'block';
     dropPinBtn.innerText = "DROP OFFER ON MAP";
@@ -392,7 +410,7 @@ postNeedBtn.addEventListener('click', () => {
 /************************************************** */
 
 // The actual "Drop" logic
-dropPinBtn.addEventListener('click', () => {
+    dropPinBtn.addEventListener('click', () => {
     const item = document.getElementById('item-input').value;
     const select = document.getElementById('category-select');
     const category = select.value;
@@ -411,23 +429,20 @@ dropPinBtn.addEventListener('click', () => {
               category: category,
               color: color,
               item: item,
-              type: currentPostType,
               msg: `Urgent ${category} request: ${item}`,
               loc: [lng, lat]
           };
-  
-          // Push to Firebase
-          const newReportRef = push(ref(db, 'reports'));
-          const newKey = newReportRef.key; // This is the unique ID for THIS specific post
-          
+        // Push to Firebase
+        const newReportRef = push(ref(db, 'reports'));
+        const newKey = newReportRef.key; // This is the unique ID for THIS specific post
+        const myPosts = JSON.parse(localStorage.getItem('my_posts') || "[]");
 
-            // This allows the user to delete their own post later without an account
-          const myPosts = JSON.parse(localStorage.getItem('my_posts') || "[]");
-          myPosts.push(newKey);
-          localStorage.setItem('my_posts', JSON.stringify(myPosts));
+        myPosts.push(newKey);
+        localStorage.setItem('my_posts', JSON.stringify(myPosts));
 
+         
           set(newReportRef, newReport);
-
+  
           // Reset UI
           map.getCanvas().style.cursor = '';
           postForm.style.display = 'none';
