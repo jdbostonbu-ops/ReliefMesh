@@ -1,7 +1,13 @@
 {
   "rules": {
+    // 1. Allows anyone to READ anything in the entire database
     ".read": true,
+
+    // 2. Prevents anyone from WRITING to the root (top level)
+    ".write": false,
+
     "reports": {
+      // 3. Specifically allow reading and writing for reports
       ".read": true,
       "$report_id": {
         ".write": true
