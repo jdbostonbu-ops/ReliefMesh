@@ -1,20 +1,6 @@
 {
   "rules": {
-    // 1. Root level: Allow reading but lock general writing
     ".read": true,
-    ".write": false,
-
-    "reports": {
-     
-      ".read": true,
-      
-      "$report_id": {
-       
-        ".write": true,
-        
-        
-        ".validate": "newData.hasChildren(['category', 'item', 'loc'])"
-      }
-    }
+    ".write": true
   }
 }
