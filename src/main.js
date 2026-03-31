@@ -147,6 +147,7 @@ if (report.type === 'need') {
                         color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; cursor:pointer;">
                             ${report.type === 'need' ? 'I CAN HELP' : 'I NEED THIS'}
                         </button>
+                        ${isOwner ? `<button id="delete-${key}" style="width:100%; margin-top:8px; background:none; border:1px solid #ff4d4d; color:#ff4d4d; padding:5px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:bold;">CANCEL MY POST</button>` : ''}
                     </div>
                 `);
 /********************************************************** */
