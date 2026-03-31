@@ -151,18 +151,7 @@ if (report.type === 'need') {
                     </div>
                 `);
 /********************************************************** */
-              // THIS GLUES THEM TO THE SURFACE
-map.on('style.load', () => {
-    map.setConfigProperty('basemap', 'lightPreset', 'night');
-});
-
-                // THIS HIDES THE Markers WHEN THEY GO BEHIND THE GLOBE
-                const marker = new mapboxgl.Marker({
-                    element: el,
-                    occludedOpacity: 0 // This makes markers 100% invisible when behind the Earth
-                    })
-
-
+           const marker = new mapboxgl.Marker({ element: el, occludedOpacity: 0 })
                 .setLngLat(report.loc)
                 .setPopup(popup)
                 .addTo(map);
