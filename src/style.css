@@ -211,6 +211,53 @@ p {
 
 }
 
+/* Styles for iPhone (and most smartphones) */
+@media screen and (max-width: 480px) {
+  .container {
+    width: 100%;       /* Use full width on small screens */
+    padding: 10px;     /* Reduce padding for more space */
+  }
+  h1 {
+    font-size: 1.5rem; /* Shrink text so it doesn't overflow */
+  }
+  .hide-on-mobile {
+    display: none;     /* Hide non-essential elements */
+  }
+    .sidebar {
+        position: relative; /* Removes it from "floating" over content */
+        width: 90%;         /* Uses most of the screen width, but not all */
+        left: 5%;           /* Centers it horizontally */
+        margin-top: 20px;   /* Pulls it up so it's not 660px down the page */
+        height: auto;       /* Let it grow based on content */
+        max-height: 400px;  /* Prevents it from being too long */
+        font-size: 0.85rem; /* Smaller font for small screens */
+        padding: 15px;      /* Tighter padding */
+    }
+}
+
+/* Styles for iPad (Tablets) */
+@media screen and (min-width: 481px) and (max-width: 1024px) {
+  .container {
+    width: 90%;        /* Slightly narrower for tablets */
+  }
+  .grid-layout {
+    grid-template-columns: 1fr 1fr; /* Switch from 3-column to 2-column */
+  }
+    .sidebar {
+        width: 250px;       /* Narrower sidebar */
+        left: 10px;         /* Move closer to the edge */
+        font-size: 0.9rem;  /* Slightly smaller text */
+        height: 60vh;       /* Adjust height for tablet proportions */
+    }
+}
+
+
+
+
+
+
+
+
 
 
 

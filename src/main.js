@@ -117,7 +117,6 @@ onValue(reportsRef, (snapshot) => {
 
     const el = document.createElement('div');
     el.className = 'sos-marker pulse';
-
     /** THE INITIAL DYNAMIC GLOW **/
     el.style.filter = `
         drop-shadow(0 0 8px ${report.color}) 
@@ -138,7 +137,7 @@ onValue(reportsRef, (snapshot) => {
 
     // --- FORMING TRIANGLES / CIRCLES ---
     
-    el.className = 'sos-marker pulse';
+    el.className = 'sos-marker';
 
 if (report.type === 'need') {
    
