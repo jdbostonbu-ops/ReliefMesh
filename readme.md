@@ -26,9 +26,6 @@ A "Tinder-style" matching system for crisis relief. Users can swipe through near
 ### 🌐 Browser & Device Compatibility
 
 
-### 🌐 Browser & Device Compatibility
-
-
 | Browser / Device | Status | Performance Notes |
 | :--- | :--- | :--- |
 | **Google Chrome** | ✅ Optimized | Full support for WebGL rendering & high-poly mesh textures. |
