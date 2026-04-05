@@ -510,9 +510,11 @@ function spinGlobe() {
 // EVENT LISTENERS: The "Green Light" for the engine
 // Stop when touching
 map.on('mousedown', () => { userInteracting = true; });
+map.on('touchstart', () => { userInteracting = true; });
 
 // Restart when released or finished moving
 map.on('mouseup', () => { userInteracting = false; spinGlobe(); });
+map.on('touchend', () => { userInteracting = false; spinGlobe(); });
 map.on('dragend', () => { userInteracting = false; spinGlobe(); });
 map.on('pitchend', () => { userInteracting = false; spinGlobe(); });
 map.on('rotateend', () => { userInteracting = false; spinGlobe(); });
