@@ -5,7 +5,8 @@
 > 🚀 **[Live Demo](https://jdbostonbu-ops.github.io/ReliefMesh/)** | 👤 **[GitHub Profile](https://github.com)**
 
 ## 👤 Author
-**Jacqueline**  
+**Jacqueline**
+*Full-Stack Developer & Crisis Tech Innovator* 
 [Check out my GitHub Profile](https://github.com/jdbostonbu-ops)
 
 ## 🌍 The Problem
