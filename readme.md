@@ -20,6 +20,20 @@ A "Tinder-style" matching system for crisis relief. Users can swipe through near
 - **Auth:** Firebase Auth (Secure User Profiles)
 - **Styling:** Tailwind CSS (Mobile-First Design)
 
+### 🌐 Browser & Device Compatibility
+
+
+| Browser / Device | Status | Performance Notes |
+| :--- | :--- | :--- |
+| **Google Chrome** | ✅ Optimized | Full support for 4K/8K grid & GSAP transitions. |
+| **Microsoft Edge** | ✅ Supported | Matches Chrome's rendering engine. |
+| **iPhone (iOS)** | ✅ Compatible | Fully functional; ~2s initial canvas load time. |
+| **iPad / Tablets** | ✅ Compatible | Smooth fluid scrolling; ~7s canvas initialization delay. |
+| **Apple Safari** | ⚠️ Limited | Supported; performance may vary with high-res video playback. |
+
+> **Note:** The Frame Forge engine is cross-platform. While initialization times vary by hardware, the core interactive experience is maintained across all modern mobile and desktop browsers.
+
+
 ## ⚡ Key Features
 - **Live SOS Map:** Pulse markers for urgent medical or food needs.
 - **Resource Swiper:** Swipe right to "Claim" or "Offer" help to a neighbor.
