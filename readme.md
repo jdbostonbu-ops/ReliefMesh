@@ -42,7 +42,7 @@ A "Tinder-style" matching system for crisis relief. Users can swipe through near
 - **Geofencing:** Logic to only show users within a 5-mile radius to keep help local.
 - **Offline-First:** Basic UI caching for low-connectivity environments.
 
-# Why my version of ReliefMesh is actually "Competitive":
+## Why my version of ReliefMesh is actually "Competitive":
 - **Peer-to-Peer (P2P):** FEMA is "Top-Down" (Government to Citizen). My app is "Side-to-Side" (Neighbor to Neighbor). In a real disaster, neighbors usually help each other hours or days before a FEMA truck arrives.
 - **The "Mother Earth" Visual:** By using the 3D Globe, I make it easy for a global org like Johns Hopkins to see "Hotspots" of needs across an entire continent at a glance. 
 - **Speed (Firebase):** My app updates in milliseconds. Most government tools are slow, require logins, and have massive forms to fill out.
