@@ -2,6 +2,10 @@
 # 🆘 ReliefMesh: Peer-to-Peer Disaster Response
 A real-time, "Last-Mile" resource exchange for local communities during crises.
 
+## 👤 Author
+**Jacqueline**  
+[Check out my GitHub Profile](https://github.com/jdbostonbu-ops)
+
 ## 🌍 The Problem
 During disasters, official dashboards focus on infrastructure (power grids, roads). Individual human needs—"I need insulin," "I have a generator to share"—are often lost in the noise.
 
@@ -9,6 +13,7 @@ During disasters, official dashboards focus on infrastructure (power grids, road
 A "Tinder-style" matching system for crisis relief. Users can swipe through nearby resource offers or requests within a 5-mile radius, even when traditional networks are strained.
 
 ## 🛠 Tech Stack
+- **Compatibility:**: Mobile iOS and Tablet/iPad touch compapatible
 - **Frontend:** Vite + Vanilla JS (or React)
 - **Maps:** Mapbox GL JS (3D Terrain & Heatmaps)
 - **Database:** Firebase Realtime Database (Instant Sync)
