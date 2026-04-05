@@ -1,6 +1,8 @@
 # Last Mile
 # 🆘 ReliefMesh: Peer-to-Peer Disaster Response
-A real-time, "Last-Mile" resource exchange for local communities during crises.
+> An interactive terrain and mesh visualization engine built for high-performance rendering. A real-time, "Last-Mile" resource exchange for local communities during crises.
+> <br>
+> 🚀 **[Live Demo](https://jdbostonbu-ops.github.io/ReliefMesh/)** | 👤 **[GitHub Profile](https://github.com)**
 
 ## 👤 Author
 **Jacqueline**  
@@ -23,16 +25,18 @@ A "Tinder-style" matching system for crisis relief. Users can swipe through near
 ### 🌐 Browser & Device Compatibility
 
 
+### 🌐 Browser & Device Compatibility
+
+
 | Browser / Device | Status | Performance Notes |
 | :--- | :--- | :--- |
-| **Google Chrome** | ✅ Optimized | Full support for 4K/8K grid & GSAP transitions. |
-| **Microsoft Edge** | ✅ Supported | Matches Chrome's rendering engine. |
-| **iPhone (iOS)** | ✅ Compatible | Fully functional; ~2s initial canvas load time. |
-| **iPad / Tablets** | ✅ Compatible | Smooth fluid scrolling; ~7s canvas initialization delay. |
-| **Apple Safari** | ⚠️ Limited | Supported; performance may vary with high-res video playback. |
+| **Google Chrome** | ✅ Optimized | Full support for WebGL rendering & high-poly mesh textures. |
+| **Microsoft Edge** | ✅ Supported | Smooth performance; matches Chrome's Chromium engine. |
+| **iPhone (iOS)** | ✅ Compatible | Fully functional; optimized touch-controls for 3D rotation. |
+| **iPad / Tablets** | ✅ Compatible | Large-screen interactive mesh support with minimal latency. |
+| **Apple Safari** | ⚠️ Limited | Supported; may experience variance in shader-intensive scenes. |
 
-> **Note:** The Frame Forge engine is cross-platform. While initialization times vary by hardware, the core interactive experience is maintained across all modern mobile and desktop browsers.
-
+> **Note:** The ReliefMesh engine is built for cross-platform 3D visualization. While initialization times and frame rates depend on your device's GPU, the core interactive mesh experience is maintained across all modern browsers.
 
 ## ⚡ Key Features
 - **Live SOS Map:** Pulse markers for urgent medical or food needs.
