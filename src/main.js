@@ -173,7 +173,7 @@ if (report.type === 'need') {
                     </div>
                 `);
 /********************************************************** */
-              // 1. THIS GLUES THEM TO THE SURFACE
+              //  THIS GLUES THEM TO THE SURFACE
 const marker = new mapboxgl.Marker({ element: el, occludedOpacity: 0 })
                 .setLngLat(report.loc)
                 .setPopup(popup)
@@ -411,7 +411,7 @@ postNeedBtn.addEventListener('click', () => {
     dropPinBtn.style.color = "white";
 });
 
-/************************************************** */
+// ************************************************* //
 
 // The actual "Drop" logic
     dropPinBtn.addEventListener('click', () => {

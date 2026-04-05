@@ -14,11 +14,11 @@ html, body {
 }
 
 h1{
-  font-size: 40px;
+  font-size: 20px;
 }
 
 h2{
-  font-size:40px;
+  font-size:20px;
 }
 
 h2, h1, p{
@@ -40,22 +40,24 @@ p {
 
 .overlay {
     position: absolute;
-    top: 20px;       /* Starts at the very top */
+    top: 5px;       /* Starts at the very top */
     left: 20px;
-    width: 320px;    /* Fixed width so they align perfectly */
+    width: 180px;    /* Fixed width so they align perfectly */
     z-index: 20;     /* Highest priority */
     background: rgba(15, 15, 15, 0.9);
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 20px;
     border: 1px solid rgba(77, 184, 255, 0.3);
+    
 }
 
 .sidebar {
     position: absolute;
     left: 20px;      /* Aligns with the box above */
-    width: 320px;    /* Matches width of the search box */
-    height: calc(75vh - 200px); /* Fills the rest of the screen */
+    height: 90vh;
+    width: 180px; /* Keep the whole sidebar inside the view */
+    height: calc(50vh - 100px); 
     z-index: 10;
     background: rgba(15, 15, 15, 0.85);
     backdrop-filter: blur(10px);
@@ -63,7 +65,7 @@ p {
     padding: 20px;
     border: 1px solid rgba(77, 184, 255, 0.3);
     overflow-y: auto; /* Adds a scrollbar if you have many matches */
-    margin-top: 660px;
+    margin-top: 440px;
 }
 
 
@@ -107,9 +109,9 @@ p {
 
 #zip-input, #search-btn {
     
-    font-size: 26px !important;
+    font-size: 16px !important;
     font-family: inherit; 
-    padding: 12px 15px;        
+    padding: 5px 15px;        
     border-radius: 8px;       
     border: 1px solid rgba(77, 184, 255, 0.5);
 }
@@ -118,7 +120,7 @@ p {
 #zip-input {
     background: rgba(255, 255, 255, 0.1);
     color: white;
-    width: 180px; 
+    width: 150px; 
     outline: none;
     user-select: text; /* Ensures you can still type in the box */
 }
@@ -130,7 +132,7 @@ p {
     font-weight: bold;
     
     cursor: pointer;
-    padding-bottom: 20px;
+    padding-bottom: 5px;
     transition: background 0.3s ease;
 }
 
