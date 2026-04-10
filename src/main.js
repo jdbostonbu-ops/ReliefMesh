@@ -7,7 +7,7 @@ import confetti from 'canvas-confetti';
 
 //  FIREBASE CONFIGURATION
 const firebaseConfig = {
-  apiKey: "AIzaSyBtJIgtW2gQOxsQDYX5iXtjub8HGX2Nbqk",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "reliefmesh-ce8fd.firebaseapp.com",
   projectId: "reliefmesh-ce8fd",
   storageBucket: "reliefmesh-ce8fd.firebasestorage.app",
