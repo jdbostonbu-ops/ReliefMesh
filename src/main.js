@@ -129,12 +129,12 @@ onValue(reportsRef, (snapshot) => {
     el.addEventListener('mouseenter', () => {
         el.style.filter = `drop-shadow(0 0 8px ${report.color}) drop-shadow(0 0 20px ${report.color})`;
         el.style.zIndex = '1000'; 
-    }); // FIXED: was )}
+    }); 
 
     el.addEventListener('mouseleave', () => {
         el.style.filter = `drop-shadow(0 0 5px ${report.color}) drop-shadow(0 0 10px ${report.color}66)`;
         el.style.zIndex = ''; 
-    }); // FIXED: was )}
+    }); 
 
     // --- FORMING TRIANGLES / CIRCLES ---
     
@@ -188,11 +188,7 @@ const marker = new mapboxgl.Marker({ element: el, occludedOpacity: 0 })
                 const btn = document.getElementById(`btn-${key}`);
                 const popupElement = document.querySelector('.mapboxgl-popup-content');
                 
-                 if (typeof Hammer !== 'undefined' && popupElement) {
-                    const hammer = new Hammer(popupElement);
-                    hammer.on('swiperight', () => { if (btn) btn.click(); });
-                    hammer.on('swipeleft', () => popup.remove());
-                }
+             
 
                 // DELETE LOGIC
                 if (delBtn) {
