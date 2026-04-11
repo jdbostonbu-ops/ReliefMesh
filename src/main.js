@@ -186,9 +186,6 @@ const marker = new mapboxgl.Marker({ element: el, occludedOpacity: 0 })
             popup.on('open', () => {
                 const delBtn = document.getElementById(`delete-${key}`);
                 const btn = document.getElementById(`btn-${key}`);
-                const popupElement = document.querySelector('.mapboxgl-popup-content');
-                
-             
 
                 // DELETE LOGIC
                 if (delBtn) {

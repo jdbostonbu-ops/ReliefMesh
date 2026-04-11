@@ -1,6 +1,11 @@
-# Last Mile
 # 🆘 ReliefMesh: Peer-to-Peer Disaster Response
 A real-time, "Last-Mile" resource exchange for local communities during crises.
+
+### 👤 Author
+**Jacqueline**  
+[Check out my GitHub Profile](https://github.com/jdbostonbu-ops)
+
+🚀 **[Visit the Developer Playhouse](https://jdbostonbu-ops.github.io/ReliefMesh/)**
 
 ## 🌍 The Problem
 During disasters, official dashboards focus on infrastructure (power grids, roads). Individual human needs—"I need insulin," "I have a generator to share"—are often lost in the noise.
@@ -17,8 +22,9 @@ A "Tinder-style" matching system for crisis relief. Users can swipe through near
 
 ## ⚡ Key Features
 - **Live SOS Map:** Pulse markers for urgent medical or food needs.
-- **Resource Swiper:** Swipe right to "Claim" or "Offer" help to a neighbor.
-- **Geofencing:** Logic to only show users within a 5-mile radius to keep help local.
+- **Resource Cards:** "Claim" or "Offer" to help a neighbor.
+- **Geocoding** (turning an address into a pin)
+- **Spatial Mapping** (showing icons based on coordinates).
 - **Offline-First:** Basic UI caching for low-connectivity environments.
 
 # Why my version of ReliefMesh is actually "Competitive":
