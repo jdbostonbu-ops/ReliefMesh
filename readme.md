@@ -21,7 +21,7 @@ A "Tinder-style" matching system for crisis relief. Users can swipe through near
 - **Styling:** Tailwind CSS (Mobile-First Design)
 
 ## ⚡ Key Features
-- **Live SOS Map:** Pulse markers for urgent medical or food needs.
+- **Live SOS Map:** Pulse markers for urgent medical, food needs, utility and shelter.
 - **Resource Cards:** "Claim" or "Offer" to help a neighbor.
 - **Geocoding** (turning an address into a pin)
 - **Spatial Mapping** (showing icons based on coordinates).
