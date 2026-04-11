@@ -5,7 +5,7 @@ A real-time, "Last-Mile" resource exchange for local communities during crises.
 **Jacqueline**  
 [Check out my GitHub Profile](https://github.com/jdbostonbu-ops)
 
-🚀 **[Visit the Developer Playhouse](https://jdbostonbu-ops.github.io/ReliefMesh/)**
+🚀 **[Visit ReliefMesh](https://jdbostonbu-ops.github.io/ReliefMesh/)**
 
 ## 🌍 The Problem
 During disasters, official dashboards focus on infrastructure (power grids, roads). Individual human needs—"I need insulin," "I have a generator to share"—are often lost in the noise.
