@@ -1,6 +1,22 @@
 {
   "rules": {
+    
     ".read": true,
-    ".write": true
+
+    "reports": {
+      
+      "$report_id": {
+       
+        ".write": "newData.exists() || !newData.exists()",
+        
+        
+        ".validate": "newData.hasChildren(['loc', 'type', 'item', 'category', 'color']) || !newData.exists()"
+      }
+    },
+
+  
+    "$other": {
+      ".write": false
+    }
   }
 }
