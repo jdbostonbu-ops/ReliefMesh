@@ -1,22 +1,15 @@
 {
   "rules": {
-    
     ".read": true,
-
+    ".write": false,
     "reports": {
       
-      "$report_id": {
-       
-        ".write": "newData.exists() || !newData.exists()",
-        
-        
-        ".validate": "newData.hasChildren(['loc', 'type', 'item', 'category', 'color']) || !newData.exists()"
+      "$pinId": {
+        ".read": true,
+        // Now, anyone can create or modify a specific pin,
+        // BUT they can no longer delete the whole "reports" list in one go.
+        ".write": true
       }
-    },
-
-  
-    "$other": {
-      ".write": false
     }
   }
 }
