@@ -16,10 +16,10 @@ A real-time, "Last-Mile" resource exchange for local communities during crises.
 | **Safari** | ✅ Compatible | Full support for Safari and WebKit rendering. Optimized for SVG marker pulsing. |
 | **Firefox** | ✅ Supported | Full support. Verified for interactive post cards and coordinate mapping. |
 | **iPad & Tablets** | ✅ Supported | Full support. Verified for interactive post cards and coordinate mapping.  
-| **iPhone (iOS)** | ⚠️ Limited | **Landscape Orientation only.** Must be viewed at **50% zoom-out** for UI scaling. |
+| **iPhone (iOS)** | ⚠️ Limited | **Landscape Orientation only.** please use Landscape Orientation at 50% zoom.|
 
 ### 📱 Special Instructions for iPhone specific Mobile Devices
-ReliefMesh is currently optimized for desktop-first interactions. For the best experience on **iPhone**:
+ReliefMesh was developed without a mobile-responsive framework like Bootstrap, as it was primarily architected for large-scale geospatial visualization. Consequently, the interface is not as reliable on mobile devices as it is on tablets or computers; for the best experience on a phone:
 1.  Rotate your device to **Landscape Mode**.
 2.  Set your browser zoom to **50%** (via the `AA` menu in Safari or Browser Settings in Chrome).
 
@@ -27,14 +27,26 @@ ReliefMesh is currently optimized for desktop-first interactions. For the best e
 During disasters, official dashboards focus on infrastructure (power grids, roads). Individual human needs—"I need insulin," "I have a generator to share"—are often lost in the noise.
 
 ## 🚀 The Solution
-A "Tinder-style" matching system for crisis relief. Users can swipe through nearby resource offers or requests within a 5-mile radius, even when traditional networks are strained.
+A matching system for crisis relief. Users can enter their zip code or any city, state or country and view resource offers or requests. FEMA or American Redcross can see the need immediately by glow and triangles and community members can be involved in relief efforts through a peer-to-peer network by posting offers circumventing traditional networks that can be strained. The idea came from the "Tinder app". I thought I could implement a "Tinder style" app but as my project morphed, I realized that "Google Earth style" was better suited for my project.
+
+# 🗺️ Data & Geospatial Engineering | Technical Summary
+This project demonstrates the application of API-driven architecture by bridging Firebase Realtime Database with Mapbox GL JS to create a live, interactive community resource map.
+
+* Geospatial API Logic:** Implemented a full data lifecycle by fetching raw JSON coordinates (latitude/longitude) from Firebase and injecting them into the Mapbox API to render dynamic, custom-styled "Need" and "Want" pins.
+
+* Real-Time Synchronization:** Leveraged Firebase SDK listeners to monitor server-side changes, ensuring the client-side map reflects new resource pins instantly without requiring a page refresh.
+
+* Persistent State Management:** Utilized Firebase for persistent data retrieval, maintaining a stable "source of truth" for geospatial markers even across different browser sessions.
+
+* **Interactive Visualizations:** Used Mapbox GL JS to manipulate map layers programmatically, transforming static data points into interactive elements with custom popups and optimized performance.
 
 ## 🛠 Tech Stack
-- **Frontend:** Vite + Vanilla JS (or React)
+- **Frontend:** Vite + Vanilla JS (or React), React, Mapbox GL JS, CSS3 (Custom UI)
 - **Maps:** Mapbox GL JS (3D Terrain & Heatmaps)
 - **Database:** Firebase Realtime Database (Instant Sync)
 - **Auth:** Firebase Auth (Secure User Profiles)
-- **Styling:** Tailwind CSS (Mobile-First Design)
+- **Backend:** Firebase (Realtime Database & Authentication)
+- **Deployment:** AWS Amplify (CI/CD)
 
 ## ⚡ Key Features
 - **Live SOS Map:** Pulse markers for urgent medical, food needs, utility and shelter.
