@@ -1,5 +1,5 @@
 # 🆘 ReliefMesh: Peer-to-Peer Disaster Response
-A real-time, "Last-Mile" resource exchange for local communities during crises.
+A real-time, disaster relief resource exchange for local communities during crises.
 
 ### 👤 Author
 **Jacqueline**  
