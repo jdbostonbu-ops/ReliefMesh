@@ -7,6 +7,8 @@ A real-time, "Last-Mile" resource exchange for local communities during crises.
 
 🚀 **[Visit ReliefMesh](https://jdbostonbu-ops.github.io/ReliefMesh/)**
 
+<img width="1432" height="803" alt="Screen Shot 2026-04-20 at 7 49 34 PM" src="https://github.com/user-attachments/assets/e29b97b1-dd1b-4b62-9f9f-2a5f64858c6f" />
+
 ## 🌐 Browser & Device Compatibility
 
 | Browser / Device | Status | Performance Notes |
@@ -29,7 +31,7 @@ During disasters, official dashboards focus on infrastructure (power grids, road
 ## 🚀 The Solution
 A matching system for crisis relief. Users can enter their zip code or any city, state or country and view resource offers or requests. FEMA or American Redcross can see the need immediately by glow and triangles and community members can be involved in relief efforts through a peer-to-peer network by posting offers circumventing traditional networks that can be strained. The idea came from the "Tinder app". I thought I could implement a "Tinder style" app but as my project morphed, I realized that "Google Earth style" was better suited for my project.
 
-# 🗺️ Data & Geospatial Engineering | Technical Summary
+## 🗺️ Data & Geospatial Engineering | Technical Summary
 This project demonstrates the application of API-driven architecture by bridging Firebase Realtime Database with Mapbox GL JS to create a live, interactive community resource map.
 
 * Geospatial API Logic:** Implemented a full data lifecycle by fetching raw JSON coordinates (latitude/longitude) from Firebase and injecting them into the Mapbox API to render dynamic, custom-styled "Need" and "Want" pins.
