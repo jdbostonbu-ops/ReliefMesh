@@ -12,8 +12,6 @@ A real-time, disaster relief resource exchange for local communities during cris
 
 🚀 **[Visit ReliefMesh](https://jdbostonbu-ops.github.io/ReliefMesh/)**
 
-<img width="1432" height="803" alt="Screen Shot 2026-04-20 at 7 49 34 PM" src="https://github.com/user-attachments/assets/e29b97b1-dd1b-4b62-9f9f-2a5f64858c6f" />
-
 ## 🌐 Browser & Device Compatibility
 
 | Browser / Device | Status | Performance Notes |
