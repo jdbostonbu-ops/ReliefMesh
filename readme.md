@@ -5,6 +5,11 @@ A real-time, disaster relief resource exchange for local communities during cris
 **Jacqueline**  
 [Check out my GitHub Profile](https://github.com/jdbostonbu-ops)
 
+<div align="center">
+  <img src="ReliefMesh.gif" width="100%" alt="ReliefMesh Geospatial P2P Demo">
+  <p><em>Global ReliefMesh peer-to-peer Geospatial Illustration.</em></p>
+</div>
+
 🚀 **[Visit ReliefMesh](https://jdbostonbu-ops.github.io/ReliefMesh/)**
 
 <img width="1432" height="803" alt="Screen Shot 2026-04-20 at 7 49 34 PM" src="https://github.com/user-attachments/assets/e29b97b1-dd1b-4b62-9f9f-2a5f64858c6f" />
