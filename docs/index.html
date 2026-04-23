@@ -7,11 +7,38 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>ReliefMesh App</title>
-    <script type="module" crossorigin src="/ReliefMesh/assets/index-EYlR4NDH.js"></script>
-    <link rel="stylesheet" crossorigin href="/ReliefMesh/assets/index-CPrgHb7Q.css">
+    <script type="module" crossorigin src="/ReliefMesh/assets/index-_Nezbm7g.js"></script>
+    <link rel="stylesheet" crossorigin href="/ReliefMesh/assets/index-iuYEZfcr.css">
   </head>
   <body>
 
+  <div id="splash-container"  style="cursor: pointer;">
+  <div class="bg-rainbow"></div>
+  <div class="bg-rainbow bg-rainbow2"></div>
+  <div class="bg-rainbow bg-rainbow3"></div>
+  
+  <div class="content">
+    <div class="Relief">ReliefMesh</div>
+    <svg style="display: none;">
+  <filter id="wavy">
+    <feTurbulence x="0" y="0" baseFrequency="0.02" numOctaves="5" seed="1">
+      <animate attributeName="baseFrequency" dur="30s" values="0.02;0.05;0.02" repeatCount="indefinite" />
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" scale="30" />
+  </filter>
+</svg>
+    <!-- New Log In Trigger -->
+    <div id="login-zone"> 
+      <!-- Hidden Password Window -->
+      <div id="password-window" class="hidden">
+        <input type="password" id="pass-input" data-label="keypad_open" placeholder="Type demo">
+        <button id="confirm-btn" class="confirm-btn" data-label="confirm" >Log In</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="relief-reveal-ready">
   <div id="app" style="width: 100vw; height: 100vh;"></div>
   <div class="overlay">
     <img src="data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='utf-8'?%3e%3c!--%20Uploaded%20to:%20SVG%20Repo,%20www.svgrepo.com,%20Generator:%20SVG%20Repo%20Mixer%20Tools%20--%3e%3csvg%20width='800px'%20height='800px'%20viewBox='0%200%201024%201024'%20class='icon'%20version='1.1'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M66%20485.5a399.2%20315.1%200%201%200%20798.4%200%20399.2%20315.1%200%201%200-798.4%200Z'%20fill='%23FF5086'%20/%3e%3cpath%20d='M198.6%20666.6L148%20866.1l197.3-80z'%20fill='%23FF5086'%20/%3e%3cpath%20d='M906.9%20528.5C900.4%20672.9%20756.6%20836%20564.7%20836c-30.9%200-60%201.3-88.6-4.3%2050.1%2034.6%20118.4%2043.7%20191.5%2043.7%20155.9%200%20269.3-84.5%20276.1-212.4%203-56.3-19-106.4-36.8-134.5z'%20fill='%2348A4FF'%20/%3e%3cpath%20d='M890.3%20764.4l35.8%20135.5-139.5-54.3z'%20fill='%2348A4FF'%20/%3e%3cpath%20d='M309.6%20470m-46.6%200a46.6%2046.6%200%201%200%2093.2%200%2046.6%2046.6%200%201%200-93.2%200Z'%20fill='%23FFFFFF'%20/%3e%3cpath%20d='M465.6%20470m-46.6%200a46.6%2046.6%200%201%200%2093.2%200%2046.6%2046.6%200%201%200-93.2%200Z'%20fill='%23FFFFFF'%20/%3e%3cpath%20d='M620.8%20470m-46.6%200a46.6%2046.6%200%201%200%2093.2%200%2046.6%2046.6%200%201%200-93.2%200Z'%20fill='%23FFFFFF'%20/%3e%3c/svg%3e" alt="ReliefMesh Logo" width="30" height="30">
@@ -94,7 +121,7 @@
         >No active matches yet. Swipe on a marker to help!</p>
     </div>
 </div>
-
+</main>
 
 </body>
 </html>

@@ -32,6 +32,110 @@ const postForm = document.getElementById('post-form');
 const dropPinBtn = document.getElementById('drop-pin-btn');
 const resetViewBtn = document.getElementById('reset-view-btn');
 
+const splash = document.getElementById('splash-container');
+const loginTrigger = document.querySelector('.content .Relief'); 
+const passInput = document.getElementById('pass-input');
+const passWindow = document.getElementById('password-window');
+const confirmBtn = document.getElementById('confirm-btn');
+const mainGlobe = document.querySelector('.relief-reveal-ready');
+
+const loginVoicePath = "src/british-male"; 
+let isLoggingIn = false;
+
+splash.addEventListener('click', () => {
+    const unlock = new Audio();
+    unlock.play().catch(() => {});
+    console.log("Audio Unlocked");
+}, { once: true });
+
+// 1. Initial State: Force globe hidden
+if (mainGlobe) {
+    mainGlobe.style.opacity = '0';
+    mainGlobe.style.visibility = 'hidden';
+}
+
+// 2. Audio Helper (For hovers and keypad opening)
+function playLoginAudio(target) {
+    if (window.currentAudio) window.currentAudio.pause();
+    const label = (typeof target === 'string') ? target : (target.getAttribute('data-label') || 'keypad_open');
+    window.currentAudio = new Audio(`${loginVoicePath}/${label}.mp3`);
+    window.currentAudio.play().catch(e => console.log("Hover audio blocked: Click screen first"));
+}
+
+// 3. Hover Listeners
+[loginTrigger, passInput, confirmBtn].forEach(el => {
+    if (!el) return;
+    el.addEventListener('mouseenter', () => {
+        el.classList.add('active-focus');
+        playLoginAudio(el);
+    });
+    el.addEventListener('mouseleave', () => el.classList.remove('active-focus'));
+});
+
+// 4. OPEN KEYPAD (Clicking ReliefMesh)
+loginTrigger.addEventListener('mouseenter', (e) => {
+    e.stopPropagation();
+    passWindow.classList.remove('hidden');
+    // Using your specific file
+    const openAudio = new Audio(`${loginVoicePath}british-male/keypad_open.mp3`);
+    openAudio.play();
+    setTimeout(() => passInput.focus(), 500);
+});
+
+// 5. LOGIN ACTION (Password check and hardcoded files)
+confirmBtn.addEventListener('mouseenter', (e) => {
+    e.stopPropagation();
+    if (isLoggingIn) return;
+
+    if (passInput.value === "demo") {
+        isLoggingIn = true;
+        
+        // --- CONFIRM AUDIO FILE ---
+        const successAudio = new Audio(`${loginVoicePath}british-male/confirm.mp3`);
+        successAudio.load();
+        successAudio.play().catch(err => console.log("Confirm audio missing"));
+
+        confirmBtn.style.pointerEvents = 'none';
+        confirmBtn.style.opacity = '0.5';
+        loginTrigger.classList.add('drop-off');
+
+        setTimeout(() => {
+            splash.style.transition = "opacity 1.5s ease";
+            splash.style.opacity = '0';
+            splash.style.pointerEvents = 'none';
+
+            // REVEAL GLOBE
+            if (mainGlobe) {
+                mainGlobe.style.visibility = 'visible';
+                mainGlobe.style.opacity = '1';
+                mainGlobe.style.pointerEvents = 'auto';
+                mainGlobe.classList.add('active');
+            }
+
+            setTimeout(() => {
+                splash.style.display = 'none';
+                isLoggingIn = false;
+            }, 1500);
+        }, 2500);
+    } else {
+        // --- ACCESS DENIED AUDIO FILE ---
+        const errorAudio = new Audio(`${loginVoicePath}british-male/access_denied.mp3`);
+        errorAudio.load();
+        errorAudio.play().catch(err => console.log("Access denied audio missing"));
+        
+        if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+        passInput.value = "";
+        passInput.focus();
+    }
+});
+
+// Enter key support
+passInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') confirmBtn.click();
+});
+
+
+
 // STABILITY FIX: Clear storage before starting
 mapboxgl.clearStorage();
 
