@@ -10,34 +10,18 @@
     <title>ReliefMesh App</title>
   </head>
   <body>
-
-  <div id="splash-container"  style="cursor: pointer;">
-  <div class="bg-rainbow"></div>
-  <div class="bg-rainbow bg-rainbow2"></div>
-  <div class="bg-rainbow bg-rainbow3"></div>
-  
-  <div class="content">
-    <div class="Relief">ReliefMesh</div>
-    <svg style="display: none;">
-  <filter id="wavy">
-    <feTurbulence x="0" y="0" baseFrequency="0.02" numOctaves="5" seed="1">
-      <animate attributeName="baseFrequency" dur="30s" values="0.02;0.05;0.02" repeatCount="indefinite" />
-    </feTurbulence>
-    <feDisplacementMap in="SourceGraphic" scale="30" />
-  </filter>
-</svg>
-    <!-- New Log In Trigger -->
-    <div id="login-zone"> 
-      <!-- Hidden Password Window -->
-      <div id="password-window" class="hidden">
-        <input type="password" id="pass-input" data-label="keypad_open" placeholder="Type demo">
-        <button id="confirm-btn" class="confirm-btn" data-label="confirm" >Log In</button>
-      </div>
-    </div>
-  </div>
+  <div id="splash-container" style="display: none;">
+  <div id="signup-window" class="top-layer">
+    <h3>New here? Create an account</h3>
+    <input type="email" id="regEmailField" placeholder="Email">
+    <input type="password" id="regPassField" placeholder="Password">
+    <button id="signUpBtn" class="confirm-btn" type="button">Sign Up</button>
+    <p style="margin-top:10px">Already have an account? <a href="#" id="toLogin" style="color:#4db8ff">Log In</a></p>
+  </div> 
 </div>
 
-<main class="relief-reveal-ready">
+  <button id="logoutBtn" type="button">Log Out</button>
+
   <div id="app" style="width: 100vw; height: 100vh;"></div>
   <div class="overlay">
     <img src="social-contact-svgrepo-com.svg" alt="ReliefMesh Logo" width="30" height="30">
@@ -120,7 +104,7 @@
         >No active matches yet. Swipe on a marker to help!</p>
     </div>
 </div>
-</main>
+
 
 </body>
 <script type="module" src="/src/main.js"></script>

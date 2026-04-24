@@ -271,7 +271,6 @@ p {
 }
 
 /*Log in Page*/
-
 :root {
    --playState: running;
 }
@@ -288,121 +287,75 @@ p {
   justify-content: center;
   align-items: center;
   transition: opacity 1s ease, visibility 1s;
-  pointer-events: auto; 
+  pointer-events: auto;
 
 }
 
-.confirm-btn{
-  color: black;
-  border: none;
-  font-size: 16px;
-  margin-left: 8px;
-  border-radius: none;
-  border-color: #00f2fe !important; /* Neon Cyan */
-  box-shadow: 0 0 30px #00f2fe;
-  background: rgba(0, 242, 254, 0.15);
-  transform: scale(1.05);
-  transition: all 0.2s ease;
-
-}
-
-#pass-input:focus {
-  border-color: #ff0076;
-  box-shadow: 0 0 20px #ff0076;
-}
-
-
-.content {
+#signup-window {
+  position: fixed; /* Fixes it to the screen */
+  top: 50%;        /* Centers it vertically */
+  left: 50%;       /* Centers it horizontally */
+  transform: translate(-50%, -50%); /* Perfectly offsets the centering */
+  z-index: 1000;   /* Higher than splash-container (500) */
+  pointer-events: auto;   
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;           /* Full viewport height */
-  width: 100vw; 
-  z-index: 1000;
-}
+  gap: 15px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.4); /* Dark background so text is readable */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 
-#confirm-btn {
-  position: relative;
-  z-index: 10001; /* High z-index to ensure focusability */
-  pointer-events: auto !important;
-  cursor: pointer; /* Force the text cursor so you know it's clickable */
-}
-#pass-input, .confirm-btn {
-  position: relative;
-  z-index: 10001; /* High z-index to ensure focusability */
-  pointer-events: auto !important;
-  cursor: text; /* Force the text cursor so you know it's clickable */
-}
+  border-radius: 12px;
+  border: 2px solid #4db8ff; 
+  box-shadow: 0 0 20px rgba(0, 242, 254, 0.3);
 
-#pass-window {
-  background: rgba(255, 0, 118, 0.15);
   color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: column; /* Stack input on top of button */
-  align-items: center;    /* Horizontal center */
-  gap: 15px; 
-}
-
-.Relief {
-  /* Make the text large and responsive */
- font-size: 100px !important; 
-  font-weight: 900;
-  font-family: "Open Sans", sans-serif;
-  color: #1fac00;
-  position: relative;
-  padding: 3rem; /* Space inside the white box */
-  text-decoration: none;
-  display: flex;
   align-items: center;
-  justify-content: center;
-  line-height: 1.3;
 }
 
-.Relief.reveal-ready {
-  position: relative;
-  z-index: 1;
-  opacity: 0;
-  
-  pointer-events: none; /* Crucial: stops buttons from announcing on touch */
-  transition: opacity 1s ease;
-  
+/* Ensure inputs are easy to see */
+#regEmailField, #regPassField {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid #ff0076;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
 }
 
-.bg-rainbow {
-  animation: slide 9s ease-in-out infinite alternate;
-  animation-play-state: var(--playState);
-  background-image: linear-gradient(-60deg, Grey 50%, black 50%);
-  bottom: 0;
-  left: -50%;
-  opacity: 0.5;
+#logoutBtn {
   position: fixed;
-  right: -50%;
-  top: 0;
-  z-index: -1;
+  bottom: 20px; /* Changed from top to bottom */
+  right: 20px;
+  z-index: 2000;
+  padding: 10px 20px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #ff0076;
+  border: 2px solid #4db8ff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
 }
 
-.bg-rainbow2 {
-  animation-direction: alternate-reverse;
-  animation-duration: 10s;
-  animation-play-state: var(--playState);
+#logoutBtn:hover {
+  background: #ff0076;
+  color: white;
+  box-shadow: 0 0 15px #ff0076;
 }
 
-.bg-rainbow3 {
-  animation-duration: 11s;
-  animation-play-state: var(--playState);
+#signUpBtn {
+    background: rgba(0, 0, 0, 0.7);
+    color: #4db8ff; /* Cyan text */
+    border: 2px solid #4db8ff;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
-
-@keyframes slide {
-  0% { transform: translateX(-25%); }
-  100% { transform: translateX(25%); }
-}
-
 
 
 
