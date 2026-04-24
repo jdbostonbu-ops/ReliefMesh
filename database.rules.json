@@ -1,14 +1,13 @@
 {
   "rules": {
-    ".read": true,
-    ".write": false,
+    ".read": "auth != null",
+     ".write": false, 
     "reports": {
       
       "$pinId": {
         ".read": true,
-        // Now, anyone can create or modify a specific pin,
-        // BUT they can no longer delete the whole "reports" list in one go.
-        ".write": true
+      
+        ".write": "auth != null"
       }
     }
   }
