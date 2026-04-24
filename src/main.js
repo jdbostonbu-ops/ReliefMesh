@@ -93,21 +93,26 @@ window.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  if (signUpBtn) {
-    signUpBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const email = document.getElementById('regEmailField').value;
-      const pass = document.getElementById('regPassField').value;
-      
-      if (email && pass) {
-        if (signUpBtn.innerText === "Log In") {
-          loginUser(email, pass);
-        } else {
-          signUpUser(email, pass);
-        }
+if (signUpBtn) {
+  signUpBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('regEmailField').value;
+    const pass = document.getElementById('regPassField').value;
+    
+    // Normalize the text for comparison
+    const currentBtnText = signUpBtn.innerText.trim().toUpperCase();
+
+    if (email && pass) {
+      if (currentBtnText === "LOG IN") {
+        console.log("Attempting Login...");
+        loginUser(email, pass);
+      } else {
+        console.log("Attempting Sign Up...");
+        signUpUser(email, pass);
       }
-    });
-  }
+    }
+  });
+}
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => 
