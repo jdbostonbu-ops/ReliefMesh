@@ -1,5 +1,6 @@
 # 🆘 ReliefMesh: Peer-to-Peer Disaster Response
-A real-time, disaster relief resource exchange for local communities during crises.
+A real-time, disaster relief resource exchange for local communities during crises. 
+*  **Demo Security:** To showcase the private responder dashboard and keep the shared database secure, a simple email/password signup is required.
 
 ### 👤 Author
 **Jacqueline**  
